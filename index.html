@@ -1,24 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Oleg Boyko | AI Automation Engineer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oleg Boyko — AI Automation Engineer</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto; text-align: center; }
-        h1 { color: #333; }
-        .projects { margin-top: 30px; }
-        .project-link { display: block; margin: 10px; padding: 10px; background: #f0f0f0; border-radius: 8px; text-decoration: none; color: #333; }
+        :root { --bg: #f9fafb; --card: #ffffff; --text: #1f2937; --muted: #6b7280; --accent: #2563eb; --border: #e5e7eb; --radius: 16px; --shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; display: flex; justify-content: center; }
+        .container { max-width: 860px; width: 100%; }
+        .header { text-align: center; margin-bottom: 48px; }
+        .header h1 { font-size: 2.8rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; }
+        .header p { font-size: 1.2rem; color: var(--muted); margin: 8px 0 0; }
+        .badge { display: inline-block; background: var(--accent); color: #fff; padding: 4px 14px; border-radius: 99px; font-size: 0.9rem; font-weight: 500; margin-top: 10px; }
+        .project { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; box-shadow: var(--shadow); transition: transform 0.15s; }
+        .project:hover { transform: translateY(-3px); }
+        .project h2 { font-size: 1.5rem; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
+        .project .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+        .project .subtitle { font-weight: 600; color: var(--accent); margin-bottom: 12px; }
+        .project p { margin: 8px 0; line-height: 1.6; }
+        .project .metric { font-weight: 600; color: var(--accent); }
+        .project .tech { color: var(--muted); font-size: 0.95rem; margin-top: 12px; }
+        .footer { text-align: center; margin-top: 40px; color: var(--muted); font-size: 0.95rem; }
+        a { color: var(--accent); text-decoration: none; }
     </style>
 </head>
 <body>
-    <h1>Oleg Boyko — AI Automation Engineer</h1>
-    <p>I build autonomous AI pipelines that save companies time and money. Here are my projects.</p>
-    <div class="projects">
-        <a class="project-link" href="#">Automated Product Card Generator</a>
-        <a class="project-link" href="#">Autonomous AI Social Media Agent</a>
-        <a class="project-link" href="#">Real-Time Customer Review Analyzer</a>
-        <a class="project-link" href="#">AI-Powered Image Enhancer Web App</a>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Oleg Boyko</h1>
+            <p>AI Automation Engineer · Building autonomous pipelines that save time & money</p>
+            <span class="badge">Open to remote work worldwide</span>
+        </div>
+
+        <!-- Project 1 -->
+        <div class="project">
+            <h2><span class="dot"></span> Automated E-Commerce Product Card Generator</h2>
+            <div class="subtitle">→ 95% faster content creation</div>
+            <p><strong>Problem:</strong> Manually creating product cards takes hours per item.</p>
+            <p><strong>Solution:</strong> A pipeline using n8n, local LLM, and ComfyUI that generates photorealistic product images from a file name.</p>
+            <p class="metric">📈 Reduces card creation time from 1 hour to 2 minutes.</p>
+            <p class="tech">🛠️ n8n · ComfyUI · JuggernautXL · Google Drive API · LM Studio</p>
+            <p><a href="#">▶️ Watch demo (soon)</a></p>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="project">
+            <h2><span class="dot"></span> Autonomous AI Social Media Agent</h2>
+            <div class="subtitle">→ Replaces 80% of manual content creation</div>
+            <p><strong>Problem:</strong> Marketing teams spend hours brainstorming and creating visuals.</p>
+            <p><strong>Solution:</strong> A Telegram bot that takes a topic, uses an LLM to generate creative prompts, and produces a ready-to-post collage via ComfyUI.</p>
+            <p class="metric">📈 Automates ideation + image generation in one flow.</p>
+            <p class="tech">🛠️ Telegram Bot API · n8n · ComfyUI · Phi-4 14B · SplitInBatches</p>
+            <p><a href="#">▶️ Watch demo (soon)</a></p>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="project">
+            <h2><span class="dot"></span> Real-Time Customer Review Analyzer</h2>
+            <div class="subtitle">→ 1,000 reviews processed in under 1 minute</div>
+            <p><strong>Problem:</strong> Manual feedback analysis is slow and inconsistent.</p>
+            <p><strong>Solution:</strong> An automated system using a local LLM that instantly classifies sentiment, category, and key topics of reviews.</p>
+            <p class="metric">📈 95% accuracy · Saves 10+ hours per 1,000 reviews.</p>
+            <p class="tech">🛠️ n8n · Google Sheets API · Phi-4 14B · REST API</p>
+            <p><a href="#">▶️ Watch demo (soon)</a></p>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="project">
+            <h2><span class="dot"></span> AI-Powered Product Image Enhancement Web App</h2>
+            <div class="subtitle">→ Reduces editing time by 93%</div>
+            <p><strong>Problem:</strong> Editing product photos takes 30 minutes per photo.</p>
+            <p><strong>Solution:</strong> A full-stack web service that removes backgrounds, upscales 4x, and enhances details automatically.</p>
+            <p class="metric">📈 From $10/image (manual) to $0.01/image.</p>
+            <p class="tech">🛠️ HTML/CSS · n8n · ComfyUI · JuggernautXL · 4x-Ultrasharp</p>
+            <p><a href="#">▶️ Watch demo (soon)</a></p>
+        </div>
+
+        <div class="footer">
+            📧 oleg.boyko.02@list.ru · 🌐 <a href="https://www.linkedin.com/in/oleg-boyko-b25051413">LinkedIn</a> · 🐙 <a href="https://github.com/jesys22">GitHub</a>
+        </div>
     </div>
-    <p style="margin-top: 40px;">Contact: oleg.boyko.02@list.ru</p>
 </body>
 </html>
