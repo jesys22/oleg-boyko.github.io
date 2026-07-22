@@ -1,0 +1,206 @@
+{
+  "name": "Autonomous AI Social Media Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:1234/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"phi-line_14b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a social media manager. Given a topic, generate exactly 3 creative visual prompts and one caption. Answer ONLY with a valid JSON object, no other text.\\n\\nExample:\\n{\\n  \\\"prompts\\\": [\\n    \\\"prompt 1\\\",\\n    \\\"prompt 2\\\",\\n    \\\"prompt 3\\\"\\n  ],\\n  \\\"caption\\\": \\\"cool caption\\\"\\n}\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Topic: {{ $json.body.topic }}\"\n    }\n  ],\n  \"temperature\": 0.8,\n  \"max_tokens\": 500\n}",
+        "options": {
+          "timeout": 20000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        -64,
+        352
+      ],
+      "id": "b89b1b99-c8b5-4b0b-9621-ad9de405f15b",
+      "name": "HTTP Request",
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "notesInFlow": false,
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const llmResponse = $input.first().json.choices[0].message.content;\n\nconst cleaned = llmResponse\n  .replace(/```json\\s*/g, '')\n  .replace(/```/g, '')\n  .trim();\n\nconst parsed = JSON.parse(cleaned);\nconst caption = parsed.caption; // Текст для поста оставляем от LLM – он нам нужен\n\n// Три гарантированно чистых промпта для кофе\nconst basePrompts = [\n  \"A single glass of fresh orange juice on a white background, product photography, studio lighting, 8k, highly detailed, no people, no hands, isolated, splash of orange, minimalistic, sharp focus, condensation on glass, vibrant orange color\",\n  \"A close-up of a glass of orange juice with ice cubes, white background, commercial photography, 8k, sharp focus, clean, elegant, no people, no hands, slices of orange on the side\",\n  \"An overhead shot of a fresh orange juice on a wooden table, soft shadows, studio lighting, 8k, highly detailed, no people, product photography, isolated, half orange beside the glass\"\n];\n\n// Собираем массив объектов для SplitInBatches\nreturn basePrompts.map(p => ({\n  prompt: p,\n  caption: caption\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        352
+      ],
+      "id": "899cf7fe-1994-41dd-bb78-fce1ceaf7015",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        320,
+        336
+      ],
+      "id": "0d358b6e-1a7a-4f0b-89f4-7071607d5d16",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8188/prompt",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": {\n    \"3\": {\n      \"inputs\": { \"ckpt_name\": \"juggernautXL_ragnarok.safetensors\" },\n      \"class_type\": \"CheckpointLoaderSimple\"\n    },\n    \"4\": {\n      \"inputs\": { \"text\": \"{{ $json.prompt }}\", \"clip\": [\"3\", 1] },\n      \"class_type\": \"CLIPTextEncode\"\n    },\n    \"5\": {\n      \"inputs\": { \"text\": \"blurry, blurry text, out of focus, pixelated, distorted, ugly, low quality, jpeg artifacts, watermark, studio light, light stand, photography equipment, wrong product\", \"clip\": [\"3\", 1] },\n      \"class_type\": \"CLIPTextEncode\"\n    },\n    \"6\": {\n      \"inputs\": {\n        \"seed\": {{ Math.floor(Math.random() * 100000000000000) }},\n        \"steps\": 35,\n        \"cfg\": 4.0,\n        \"sampler_name\": \"dpmpp_2m_sde\",\n        \"scheduler\": \"karras\",\n        \"denoise\": 1,\n        \"model\": [\"3\", 0],\n        \"positive\": [\"4\", 0],\n        \"negative\": [\"5\", 0],\n        \"latent_image\": [\"7\", 0]\n      },\n      \"class_type\": \"KSampler\"\n    },\n    \"7\": {\n      \"inputs\": { \"width\": 1024, \"height\": 1024, \"batch_size\": 1 },\n      \"class_type\": \"EmptyLatentImage\"\n    },\n    \"8\": {\n      \"inputs\": { \"samples\": [\"6\", 0], \"vae\": [\"3\", 2] },\n      \"class_type\": \"VAEDecode\"\n    },\n    \"9\": {\n      \"inputs\": { \"filename_prefix\": \"ComfyUI_Final\", \"images\": [\"8\", 0] },\n      \"class_type\": \"SaveImage\"\n    }\n  },\n  \"client_id\": \"n8n-{{ $randomInt }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        576,
+        576
+      ],
+      "id": "e3d2be9f-5810-4eae-b033-1bc0e84ec3d2",
+      "name": "HTTP Request3"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        384
+      ],
+      "id": "418e28a5-dab8-44e5-b9e0-d8d0fc1a372c",
+      "name": "When clicking ‘Execute workflow’",
+      "executeOnce": false
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"message\": {\n    \"text\": \"Fresh orange juice\"\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -192,
+        512
+      ],
+      "id": "175d1f3e-7355-40a2-b374-869d6c2a6125",
+      "name": "Edit Fields"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "HTTP Request3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request3": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "3e999c66-3d82-41ba-8619-72948a10884d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e956d1dee3148b92ec765942eb183fc40d4a05aa504222e0893db08c8cd41230"
+  },
+  "nodeGroups": [],
+  "id": "fPyYbEpXB5nPonJf",
+  "tags": []
+}
