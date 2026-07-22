@@ -1,0 +1,235 @@
+{
+  "name": "Real-Time Customer Feedback Analyzer",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "review",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "3196e5b3-30c7-48cc-a037-72ec604ccc83",
+      "name": "Webhook Trigger",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "f315c352-2cd8-4b9a-8b59-136e35b5d8a7"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.item.json;\nconst reviewText = item.review_text || item.reviewText || '';\n\n// Проверяем, что отзыв не пустой\nif (!reviewText.trim()) {\n  throw new Error('Review text is empty');\n}\n\nreturn {\n  review_text: reviewText.trim()\n};"
+      },
+      "id": "a99832e1-3acc-4687-a43a-c816075b4733",
+      "name": "Validate Input",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        304,
+        -480
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:1234/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"phi-line_14b\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a strict JSON API. Your ONLY job is to analyze customer reviews and return a JSON object. Do NOT write code. Do NOT explain. Return ONLY the JSON object, no other text.\\n\\nFormat:\\n{\\n  \\\"sentiment\\\": \\\"positive\\\",\\n  \\\"category\\\": \\\"product quality\\\",\\n  \\\"key_topics\\\": [\\\"comfortable\\\", \\\"stylish\\\"]\\n}\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Review: {{ $json.review_text }}\"\n    }\n  ],\n  \"temperature\": 0.1,\n  \"max_tokens\": 300\n}",
+        "options": {
+          "timeout": 30000
+        }
+      },
+      "id": "50fac423-0ef4-4a43-88fd-229c55fb2486",
+      "name": "HTTP Request (LLM)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        352,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const llmResponse = $input.item.json.choices[0].message.content;\n\nconst start = llmResponse.indexOf('{');\nconst end = llmResponse.lastIndexOf('}');\n\nif (start === -1 || end === -1) {\n  throw new Error('No JSON object found in LLM response');\n}\n\nconst jsonStr = llmResponse.substring(start, end + 1);\nconst parsed = JSON.parse(jsonStr);\n\nreturn {\n  sentiment: parsed.sentiment,\n  category: parsed.category,\n  key_topics: parsed.key_topics.join(\", \")\n};"
+      },
+      "id": "cd901092-2dea-4256-b83d-37c58332128d",
+      "name": "Parse LLM Response",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "trigger",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1O8B72-9Kl_LkmjsLFTiIhAxBrtvzq3GRbXJn5ySgW4w/edit?gid=514704593#gid=514704593",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "AI_Reviews",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "id": "cf8883f6-e4e0-4044-93b2-a9a909dee377",
+      "name": "Google Sheets Append (Results)",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [
+        640,
+        -624
+      ]
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        32,
+        -448
+      ],
+      "id": "4bc35c81-03ef-4883-913a-26268ed75403",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"review_text\": \"The shoes are incredibly comfortable and look amazing!\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -160,
+        -432
+      ],
+      "id": "b4305e16-7a15-4621-876e-e1f46157a6ba",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://sheets.googleapis.com/v4/spreadsheets/1gSPmDOBddmUPAz9fUAzsG62xGPWO3owonrg9MDlyyS8/values/Results!A1:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "oAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={ \"values\": [ [ \"{{ $('Parse LLM Response').first().json.sentiment }}\", \"{{ $('Parse LLM Response').first().json.category }}\", \"{{ $('Parse LLM Response').first().json.key_topics }}\" ] ] }",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        816,
+        0
+      ],
+      "id": "9d4c5977-3ea3-4d1b-9ab1-10edbd3fe6fe",
+      "name": "Append to Google Sheets",
+      "credentials": {
+        "oAuth2Api": {
+          "id": "COkCVG2KW2zrhKIN",
+          "name": "Unnamed credential"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request (LLM)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Input": {
+      "main": [
+        []
+      ]
+    },
+    "HTTP Request (LLM)": {
+      "main": [
+        [
+          {
+            "node": "Parse LLM Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse LLM Response": {
+      "main": [
+        [
+          {
+            "node": "Append to Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        []
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bf6b5970-4e8d-491e-be41-55d83dedc061",
+  "meta": {
+    "instanceId": "e956d1dee3148b92ec765942eb183fc40d4a05aa504222e0893db08c8cd41230"
+  },
+  "nodeGroups": [],
+  "id": "HAjokEUoQkizFf5K",
+  "tags": []
+}
