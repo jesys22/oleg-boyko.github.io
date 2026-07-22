@@ -3,33 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oleg Boyko — AI Automation Engineer</title>
+    <title>Oleg Boyko – AI Automation Engineer</title>
     <style>
-        :root { --bg: #f9fafb; --card: #ffffff; --text: #1f2937; --muted: #6b7280; --accent: #2563eb; --border: #e5e7eb; --radius: 16px; --shadow: 0 4px 12px rgba(0,0,0,0.04); }
-        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 40px 20px; display: flex; justify-content: center; }
-        .container { max-width: 860px; width: 100%; }
+        :root { --bg: #f9fafb; --card: #ffffff; --text: #1f2937; --muted: #6b7280; --accent: #2563eb; --border: #e5e7eb; --radius: 20px; --shadow: 0 4px 12px rgba(0,0,0,0.04); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; padding: 40px 20px; }
+        .container { max-width: 900px; width: 100%; }
         .header { text-align: center; margin-bottom: 48px; }
-        .header h1 { font-size: 2.8rem; font-weight: 700; margin: 0; letter-spacing: -0.02em; }
-        .header p { font-size: 1.2rem; color: var(--muted); margin: 8px 0 0; }
-        .badge { display: inline-block; background: var(--accent); color: #fff; padding: 4px 14px; border-radius: 99px; font-size: 0.9rem; font-weight: 500; margin-top: 10px; }
-        .project { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; margin-bottom: 24px; box-shadow: var(--shadow); transition: transform 0.15s; }
-        .project:hover { transform: translateY(-3px); }
-        .project h2 { font-size: 1.5rem; margin: 0 0 8px; display: flex; align-items: center; gap: 8px; }
-        .project .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-        .project .subtitle { font-weight: 600; color: var(--accent); margin-bottom: 12px; }
-        .project p { margin: 8px 0; line-height: 1.6; }
-        .project .metric { font-weight: 600; color: var(--accent); }
-        .project .tech { color: var(--muted); font-size: 0.95rem; margin-top: 12px; }
-        .footer { text-align: center; margin-top: 40px; color: var(--muted); font-size: 0.95rem; }
-        a { color: var(--accent); text-decoration: none; }
+        .header h1 { font-size: 3rem; font-weight: 800; letter-spacing: -0.03em; background: linear-gradient(135deg, #1e3a8a, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
+        .header p { font-size: 1.2rem; color: var(--muted); }
+        .badge { display: inline-block; background: #dbeafe; color: #1e40af; padding: 4px 16px; border-radius: 99px; font-size: 0.9rem; font-weight: 500; margin-top: 12px; }
+        .about { text-align: center; margin: 0 auto 48px; max-width: 650px; font-size: 1.05rem; color: var(--muted); line-height: 1.6; }
+        .about strong { color: var(--accent); }
+        .project { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin-bottom: 28px; box-shadow: var(--shadow); transition: transform 0.2s, box-shadow 0.2s; }
+        .project:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.06); }
+        .project h2 { font-size: 1.5rem; display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .project .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+        .subtitle { font-weight: 600; color: var(--accent); margin-bottom: 16px; font-size: 1rem; }
+        .project p { margin: 8px 0; line-height: 1.7; }
+        .metric { font-weight: 600; color: #065f46; background: #d1fae5; padding: 2px 8px; border-radius: 6px; display: inline-block; margin: 6px 0; }
+        .tech { color: var(--muted); font-size: 0.95rem; margin-top: 14px; }
+        .footer { text-align: center; margin-top: 60px; color: var(--muted); font-size: 0.95rem; }
+        a { color: var(--accent); text-decoration: none; font-weight: 500; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🚀 Oleg Boyko</h1>
+            <h1>Oleg Boyko</h1>
             <p>AI Automation Engineer · Building autonomous pipelines that save time & money</p>
             <span class="badge">Open to remote work worldwide</span>
+        </div>
+
+        <!-- About Me -->
+        <div class="about">
+            <p>
+                AI Automation Engineer with a background in graphic design. I build autonomous AI pipelines that save companies time and money. My stack: <strong>n8n, ComfyUI, LM Studio, Python, Docker</strong>. Open to remote work worldwide.
+            </p>
+            <a href="oleg-boyko-cv.pdf" style="display: inline-block; margin-top: 10px; padding: 10px 20px; background: var(--accent); color: #fff; border-radius: 8px; text-decoration: none;">Download CV</a>
         </div>
 
         <!-- Project 1 -->
@@ -41,9 +53,9 @@
             <p class="metric">📈 Reduces card creation time from 1 hour to 2 minutes.</p>
             <p class="tech">🛠️ n8n · ComfyUI · JuggernautXL · Google Drive API · LM Studio</p>
             <video width="100%" controls>
-  <source src="videos/Demo.Mp4.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+                <source src="videos/Demo.Mp4.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
         <!-- Project 2 -->
@@ -53,11 +65,11 @@
             <p><strong>Problem:</strong> Marketing teams spend hours brainstorming and creating on-brand visuals for every campaign.</p>
             <p><strong>Solution:</strong> An automated agent powered by an LLM and ComfyUI. The LLM generates a creative caption, while a set of curated, high-quality image templates ensures a consistent and professional visual style for every product. For example, it instantly produced a series of images for an "orange fresh juice" campaign.</p>
             <p class="metric">📈 Automates ideation + image generation in one reliable flow.</p>
-            <p class="tech">🛠️ · n8n · ComfyUI · Phi-4 14B · SplitInBatches</p>
-             <video width="100%" controls>
-  <source src="videos/Demo2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+            <p class="tech">🛠️ n8n · ComfyUI · Phi-4 14B · SplitInBatches</p>
+            <video width="100%" controls>
+                <source src="videos/Demo2.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
         <!-- Project 3 -->
@@ -69,20 +81,9 @@
             <p class="metric">📈 Reduces feedback processing time by 95% · Enables immediate detection of issues like poor delivery or service.</p>
             <p class="tech">🛠️ n8n · Google Sheets API · Phi-4 14B · REST API · PowerShell scripting</p>
             <video width="100%" controls>
-  <source src="videos/DEMO.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-        </div>
-
-        <!-- Project 4 -->
-        <div class="project">
-            <h2><span class="dot"></span> AI-Powered Product Image Enhancement Web App</h2>
-            <div class="subtitle">→ Reduces editing time by 93%</div>
-            <p><strong>Problem:</strong> Editing product photos takes 30 minutes per photo.</p>
-            <p><strong>Solution:</strong> A full-stack web service that removes backgrounds, upscales 4x, and enhances details automatically.</p>
-            <p class="metric">📈 From $10/image (manual) to $0.01/image.</p>
-            <p class="tech">🛠️ HTML/CSS · n8n · ComfyUI · JuggernautXL · 4x-Ultrasharp</p>
-            <p><a href="#">▶️ Watch demo (soon)</a></p>
+                <source src="videos/DEMO.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
         <div class="footer">
