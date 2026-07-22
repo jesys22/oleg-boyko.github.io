@@ -1,0 +1,163 @@
+{
+  "name": "Automated E-Commerce Product Card Generator",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1LuZajLtW5MAlgz05bUgCIiWMDGfpmBWb",
+          "mode": "list",
+          "cachedResultName": "My resume ",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1LuZajLtW5MAlgz05bUgCIiWMDGfpmBWb"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        128,
+        432
+      ],
+      "id": "47d5e196-20a0-4d13-8deb-fd415a0b55d0",
+      "name": "Google Drive Trigger",
+      "alwaysOutputData": true,
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "R6TW1gEVupT5pBmJ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:1234/v1/chat/completions",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"model\": \"qwen2.5-1.5b-instruct\",\n  \"messages\": [\n    {\n      \"role\": \"system\",\n      \"content\": \"You are a product description writer. You MUST describe exactly the product mentioned in the file name. Do NOT describe anything else. Start directly with the description, using keywords: 'product photography', 'studio lighting', 'highly detailed'. Example: file 'Sneakers' → 'A pair of sneakers, product photography, white background, studio lighting, highly detailed.'\"\n    },\n    {\n      \"role\": \"user\",\n      \"content\": \"Product file name: {{ $('Google Drive Trigger').first().json.name }}\"\n    }\n  ],\n  \"temperature\": 0.5,\n  \"max_tokens\": 400\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        368,
+        208
+      ],
+      "id": "2f11d708-9029-4855-a5ad-5fa5c75f1ae3",
+      "name": "HTTP Request",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8188/prompt",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"prompt\": {\n    \"3\": {\n      \"inputs\": { \"ckpt_name\": \"juggernautXL_ragnarok.safetensors\" },\n      \"class_type\": \"CheckpointLoaderSimple\"\n    },\n    \"4\": {\n      \"inputs\": { \"text\": \"{{ $json.prompt }}\", \"clip\": [\"3\", 1] },\n      \"class_type\": \"CLIPTextEncode\"\n    },\n    \"5\": {\n      \"inputs\": { \"text\": \"blurry, blurry text, out of focus, pixelated, distorted, ugly, low quality, jpeg artifacts, watermark, studio light, light stand, photography equipment, wrong product\", \"clip\": [\"3\", 1] },\n      \"class_type\": \"CLIPTextEncode\"\n    },\n    \"6\": {\n      \"inputs\": {\n        \"seed\": {{ $json.seed }},\n        \"steps\": 35,\n        \"cfg\": 4.0,\n        \"sampler_name\": \"dpmpp_2m_sde\",\n        \"scheduler\": \"karras\",\n        \"denoise\": 1,\n        \"model\": [\"3\", 0],\n        \"positive\": [\"4\", 0],\n        \"negative\": [\"5\", 0],\n        \"latent_image\": [\"7\", 0]\n      },\n      \"class_type\": \"KSampler\"\n    },\n    \"7\": {\n      \"inputs\": { \"width\": 1024, \"height\": 1024, \"batch_size\": 1 },\n      \"class_type\": \"EmptyLatentImage\"\n    },\n    \"8\": {\n      \"inputs\": { \"samples\": [\"6\", 0], \"vae\": [\"3\", 2] },\n      \"class_type\": \"VAEDecode\"\n    },\n    \"9\": {\n      \"inputs\": { \"filename_prefix\": \"ComfyUI_Final\", \"images\": [\"8\", 0] },\n      \"class_type\": \"SaveImage\"\n    }\n  },\n  \"client_id\": \"n8n-{{ $randomInt }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        880,
+        352
+      ],
+      "id": "17ad3cd8-b945-48d7-9330-035a2dd496a8",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const file = $('Google Drive Trigger').first().json;\nconst fileName = file.name || file.fileName || '';\nconst name = fileName.toLowerCase();\n\nlet prompt = \"\";\nif (name.includes(\"кроссовки\") || name.includes(\"shoes\") || name.includes(\"sneakers\")) {\n  prompt = \"кроссовки, белый фон, студийное освещение, 8к, высокое качество\";\n} else if (name.includes(\"сумка\") || name.includes(\"bag\")) {\n  prompt = \"сумка, белый фон, студийное освещение, 8к, высокое качество\";\n} else {\n  prompt = \"кроссовки, белый фон, студийное освещение, 8к\";\n}\n\nreturn {\n  prompt: prompt,\n  seed: Math.floor(Math.random() * 100000000000000)\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        784,
+        80
+      ],
+      "id": "141b2e52-d7ab-4286-97fa-bafdc58ffbbf",
+      "name": "Code"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "c03227c1-494d-4cb6-944d-88af56e7824e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e956d1dee3148b92ec765942eb183fc40d4a05aa504222e0893db08c8cd41230"
+  },
+  "nodeGroups": [],
+  "id": "8IdJx3WdxqNrTxiq",
+  "tags": []
+}
