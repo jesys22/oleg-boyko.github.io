@@ -11,16 +11,18 @@
     <meta property="og:url" content="https://jesys22.github.io/oleg-boyko.github.io">
     <style>
         :root {
-            --bg: #f9fafb;
-            --card: #ffffff;
-            --text: #1f2937;
-            --muted: #6b7280;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
-            --border: #e5e7eb;
-            --radius: 24px;
-            --shadow: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.02);
-            --shadow-hover: 0 20px 40px -8px rgba(0,0,0,0.08), 0 10px 15px -5px rgba(0,0,0,0.03);
+            --bg: #0a0a0f;
+            --card: #13131a;
+            --text: #e8e8f0;
+            --muted: #9090a0;
+            --accent: #6366f1;
+            --accent2: #a855f7;
+            --accent3: #3b82f6;
+            --border: rgba(255,255,255,0.06);
+            --radius: 28px;
+            --shadow: 0 12px 40px rgba(0,0,0,0.4);
+            --shadow-hover: 0 20px 60px rgba(99,102,241,0.15), 0 12px 30px rgba(168,85,247,0.1);
+            --gradient: linear-gradient(135deg, #6366f1, #a855f7, #3b82f6);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -33,211 +35,290 @@
             padding: 40px 20px;
             position: relative;
             overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* Живой фон с мягкими пятнами света */
-        body::before {
-            content: "";
+        /* ---- LAVA LAMP BACKGROUND ---- */
+        .lava-container {
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background:
-                radial-gradient(circle at 30% 20%, rgba(59,130,246,0.04) 0%, transparent 50%),
-                radial-gradient(circle at 70% 60%, rgba(139,92,246,0.03) 0%, transparent 50%),
-                radial-gradient(circle at 50% 80%, rgba(59,130,246,0.02) 0%, transparent 50%);
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             z-index: 0;
             pointer-events: none;
         }
+        .lava-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out;
+        }
+        .lava-blob:nth-child(1) {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle at 30% 30%, #6366f1, #a855f7);
+            top: -200px;
+            left: -150px;
+            animation-duration: 25s;
+        }
+        .lava-blob:nth-child(2) {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle at 70% 70%, #a855f7, #3b82f6);
+            bottom: -150px;
+            right: -150px;
+            animation-duration: 20s;
+            animation-delay: -5s;
+        }
+        .lava-blob:nth-child(3) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle at 50% 50%, #3b82f6, #6366f1);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 30s;
+            animation-delay: -10s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(10%, -8%) scale(1.05); }
+            50% { transform: translate(-5%, 10%) scale(0.95); }
+            75% { transform: translate(5%, 5%) scale(1.02); }
+        }
 
         .container {
-            max-width: 920px;
+            max-width: 960px;
             width: 100%;
             position: relative;
             z-index: 1;
         }
 
+        /* ---- HEADER ---- */
         .header {
             text-align: center;
-            margin-bottom: 56px;
+            margin-bottom: 72px;
             position: relative;
+            padding: 60px 0 40px;
         }
-
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
         .header h1 {
-            font-size: 3.2rem;
+            font-size: 4.2rem;
             font-weight: 800;
-            letter-spacing: -0.04em;
-            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #8b5cf6 100%);
+            letter-spacing: -0.05em;
+            background: var(--gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 12px;
-            line-height: 1.2;
+            margin-bottom: 16px;
+            line-height: 1.1;
+            position: relative;
         }
-
         .header p {
-            font-size: 1.25rem;
+            font-size: 1.3rem;
             color: var(--muted);
-            font-weight: 400;
+            font-weight: 300;
+            letter-spacing: 0.02em;
         }
-
         .badge {
             display: inline-block;
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 6px 20px;
+            background: rgba(99,102,241,0.1);
+            border: 1px solid rgba(99,102,241,0.25);
+            color: #a5b4fc;
+            padding: 8px 24px;
             border-radius: 99px;
             font-size: 0.95rem;
             font-weight: 500;
-            margin-top: 16px;
-            box-shadow: 0 2px 8px rgba(37,99,235,0.1);
+            margin-top: 18px;
+            backdrop-filter: blur(10px);
         }
 
+        /* ---- ABOUT ---- */
         .about {
             text-align: center;
-            margin: 0 auto 56px;
+            margin: 0 auto 64px;
             max-width: 680px;
             font-size: 1.1rem;
             color: var(--muted);
             line-height: 1.7;
             position: relative;
-            padding: 24px;
-            background: rgba(255,255,255,0.7);
+            padding: 32px;
+            background: rgba(255,255,255,0.02);
             backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
         }
-        .about strong { color: var(--accent); }
+        .about strong { color: #a5b4fc; font-weight: 600; }
 
+        .btn-download {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 14px 32px;
+            background: var(--gradient);
+            color: #fff;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0 6px 24px rgba(99,102,241,0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-download::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.6s;
+        }
+        .btn-download:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(99,102,241,0.45); }
+        .btn-download:hover::after { left: 100%; }
+
+        /* ---- PROJECT CARDS ---- */
         .project {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 36px;
-            margin-bottom: 32px;
+            padding: 40px;
+            margin-bottom: 36px;
             box-shadow: var(--shadow);
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2), box-shadow 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
             position: relative;
             overflow: hidden;
+            transform-style: preserve-3d;
+            perspective: 1200px;
         }
-
-        /* Тонкая линия акцента слева на карточке */
-        .project::after {
+        .project::before {
             content: "";
             position: absolute;
             left: 0;
             top: 0;
             bottom: 0;
-            width: 4px;
-            background: linear-gradient(to bottom, var(--accent), #8b5cf6);
+            width: 5px;
+            background: var(--gradient);
             border-radius: var(--radius) 0 0 var(--radius);
+            z-index: 2;
         }
-
         .project:hover {
-            transform: translateY(-6px);
+            transform: translateY(-8px) rotateX(1deg);
             box-shadow: var(--shadow-hover);
+            border-color: rgba(99,102,241,0.3);
         }
 
         .project h2 {
-            font-size: 1.6rem;
+            font-size: 1.7rem;
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-            color: #111827;
+            gap: 14px;
+            margin-bottom: 18px;
+            color: #f0f0ff;
+            font-weight: 700;
         }
-
         .project .dot {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
+            background: var(--gradient);
             flex-shrink: 0;
-            box-shadow: 0 0 12px rgba(37,99,235,0.3);
+            box-shadow: 0 0 18px rgba(99,102,241,0.5);
         }
-
         .subtitle {
             font-weight: 600;
-            color: var(--accent);
-            margin-bottom: 20px;
+            color: #a5b4fc;
+            margin-bottom: 22px;
             font-size: 1.05rem;
             letter-spacing: -0.01em;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
         }
-
-        .project p { margin: 10px 0; line-height: 1.8; color: var(--text); }
+        .project p { margin: 12px 0; line-height: 1.8; color: #c0c0d0; }
         .metric {
             font-weight: 600;
-            color: #065f46;
-            background: #d1fae5;
-            padding: 4px 12px;
+            color: #34d399;
+            background: rgba(52,211,153,0.1);
+            padding: 6px 14px;
             border-radius: 8px;
             display: inline-block;
-            margin: 8px 0;
+            margin: 10px 0;
             font-size: 0.95rem;
+            border: 1px solid rgba(52,211,153,0.2);
         }
         .tech {
             color: var(--muted);
             font-size: 0.95rem;
-            margin-top: 18px;
-            padding-top: 16px;
-            border-top: 1px dashed var(--border);
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
         }
 
         video {
             border-radius: 16px;
-            margin-top: 20px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin-top: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
         }
-        video:hover {
-            transform: scale(1.02);
-            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
-        }
+        video:hover { transform: scale(1.01); box-shadow: 0 14px 40px rgba(0,0,0,0.6); }
 
+        a { color: #a5b4fc; text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        a:hover { color: #c7d2fe; text-decoration: underline; }
+
+        /* ---- FOOTER ---- */
         .footer {
             text-align: center;
-            margin-top: 64px;
+            margin-top: 72px;
             color: var(--muted);
             font-size: 1rem;
-            padding: 20px 0;
+            padding: 28px 0;
             border-top: 1px solid var(--border);
         }
 
-        a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
+        /* ---- ANIMATE ON SCROLL ---- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        a:hover { color: var(--accent-hover); text-decoration: none; }
+        .project, .about, .header, .footer, .lava-container {
+            animation: fadeInUp 0.8s cubic-bezier(0.15, 0.85, 0.35, 1) both;
+        }
+        .project:nth-child(2) { animation-delay: 0.1s; }
+        .project:nth-child(3) { animation-delay: 0.2s; }
+        .project:nth-child(4) { animation-delay: 0.3s; }
+        .project:nth-child(5) { animation-delay: 0.4s; }
+        .footer { animation-delay: 0.5s; }
 
-        .btn-download {
-            display: inline-block;
-            margin-top: 14px;
-            padding: 12px 28px;
-            background: linear-gradient(135deg, var(--accent), #8b5cf6);
-            color: #fff;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 4px 16px rgba(37,99,235,0.25);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .btn-download:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(37,99,235,0.35);
-            color: #fff;
-        }
-
-        /* Адаптивность для телефонов */
+        /* ---- RESPONSIVE ---- */
         @media (max-width: 600px) {
-            .header h1 { font-size: 2.2rem; }
-            .project { padding: 24px; }
+            .header h1 { font-size: 2.6rem; }
+            .project { padding: 28px 20px; }
         }
     </style>
 </head>
 <body>
+    <!-- LAVA LAMP BACKGROUND -->
+    <div class="lava-container">
+        <div class="lava-blob"></div>
+        <div class="lava-blob"></div>
+        <div class="lava-blob"></div>
+    </div>
+
     <div class="container">
         <div class="header">
             <h1>Oleg Boyko</h1>
@@ -299,14 +380,14 @@
         </div>
         
        <!-- What I'm Learning -->
-<div class="project" style="text-align: center;">
-    <h2>📚 Currently Learning</h2>
-    <p style="color: var(--muted);">LTX Video, advanced Python for AI, cloud deployment (RunPod, Docker Compose).</p>
-</div>
+        <div class="project" style="text-align: center;">
+            <h2>📚 Currently Learning</h2>
+            <p style="color: var(--muted);">LTX Video, advanced Python for AI, cloud deployment (RunPod, Docker Compose).</p>
+        </div>
 
-<div class="footer">
-    📧 oleg.boyko.02@list.ru · 🌐 <a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank">LinkedIn</a> · 🐙 <a href="https://github.com/jesys22" target="_blank">GitHub</a>
-</div>
+        <div class="footer">
+            📧 oleg.boyko.02@list.ru · 🌐 <a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank">LinkedIn</a> · 🐙 <a href="https://github.com/jesys22" target="_blank">GitHub</a>
+        </div>
     </div>
 </body>
 </html>
