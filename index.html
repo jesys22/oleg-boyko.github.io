@@ -5,25 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oleg Boyko – AI Automation Engineer</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <!-- Импорт премиальных шрифтов -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    
     <meta property="og:title" content="Oleg Boyko — AI Automation Engineer">
     <meta property="og:description" content="Building autonomous AI pipelines that save time & money. ComfyUI, n8n, LLMs.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jesys22.github.io/oleg-boyko.github.io">
     <style>
         :root {
-            --bg: #0a0a0f;
-            --card: #13131a;
+            --bg: #07070b; /* Чуть темнее для контраста с подсветкой */
+            --card: rgba(19, 19, 26, 0.6); /* Полупрозрачный для эффекта стекла */
             --text: #e8e8f0;
             --muted: #9090a0;
             --accent: #6366f1;
             --accent2: #a855f7;
             --accent3: #3b82f6;
-            --border: rgba(255,255,255,0.06);
+            --border: rgba(255,255,255,0.08);
             --radius: 28px;
-            --shadow: 0 12px 40px rgba(0,0,0,0.4);
-            --shadow-hover: 0 20px 60px rgba(99,102,241,0.15), 0 12px 30px rgba(168,85,247,0.1);
+            --shadow: 0 12px 40px rgba(0,0,0,0.6);
+            --shadow-hover: 0 20px 60px rgba(99,102,241,0.2), 0 12px 30px rgba(168,85,247,0.1);
             --gradient: linear-gradient(135deg, #6366f1, #a855f7, #3b82f6);
+            --angle: 0deg; /* Запасное значение для --angle, чтобы не сломалось в Firefox */
         }
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -38,55 +45,15 @@
             min-height: 100vh;
         }
 
-        /* ---- LAVA LAMP BACKGROUND ---- */
-        .lava-container {
+        /* ---- СПОТЛАЙТ ЗА КУРСОРОМ ---- */
+        #spotlight {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
-        }
-        .lava-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.12;
-            animation: float 25s infinite ease-in-out;
-        }
-        .lava-blob:nth-child(1) {
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, #6366f1, #a855f7);
-            top: -200px;
-            left: -150px;
-            animation-duration: 25s;
-        }
-        .lava-blob:nth-child(2) {
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, #a855f7, #3b82f6);
-            bottom: -150px;
-            right: -150px;
-            animation-duration: 20s;
-            animation-delay: -5s;
-        }
-        .lava-blob:nth-child(3) {
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, #3b82f6, #6366f1);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-duration: 30s;
-            animation-delay: -10s;
-        }
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(10%, -8%) scale(1.05); }
-            50% { transform: translate(-5%, 10%) scale(0.95); }
-            75% { transform: translate(5%, 5%) scale(1.02); }
+            z-index: 0;
+            background: radial-gradient(circle 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.06) 0%, transparent 80%);
+            transition: background 0.1s ease-out;
         }
 
         .container {
@@ -99,7 +66,7 @@
         /* ---- HEADER ---- */
         .header {
             text-align: center;
-            margin-bottom: 72px;
+            margin-bottom: 64px;
             position: relative;
             padding: 60px 0 40px;
         }
@@ -115,7 +82,7 @@
             border-radius: 2px;
         }
         .header h1 {
-            font-size: 4.2rem;
+            font-size: 4.5rem;
             font-weight: 800;
             letter-spacing: -0.05em;
             background: var(--gradient);
@@ -126,13 +93,31 @@
             line-height: 1.1;
         }
         .header p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--muted);
-            font-weight: 300;
+            font-weight: 400;
             letter-spacing: 0.02em;
+            min-height: 2rem; /* Чтобы текст не скакал при печати */
         }
-        .badge {
+        /* Мигающий курсор для машинописного текста */
+        .cursor-blink {
             display: inline-block;
+            width: 2px;
+            height: 1.2rem;
+            background: #a5b4fc;
+            margin-left: 2px;
+            vertical-align: text-bottom;
+            animation: blink 0.8s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: rgba(99,102,241,0.1);
             border: 1px solid rgba(99,102,241,0.25);
             color: #a5b4fc;
@@ -143,11 +128,26 @@
             margin-top: 18px;
             backdrop-filter: blur(10px);
         }
+        /* Индикатор "В сети" (зеленая точка) */
+        .badge::before {
+            content: '';
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #34d399;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+            animation: pulse-dot 2s ease-in-out infinite;
+        }
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
 
         /* ---- ABOUT ---- */
         .about {
             text-align: center;
-            margin: 0 auto 64px;
+            margin: 0 auto 60px;
             max-width: 680px;
             font-size: 1.1rem;
             color: var(--muted);
@@ -155,7 +155,7 @@
             position: relative;
             padding: 32px;
             background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -164,60 +164,92 @@
 
         .btn-download {
             display: inline-block;
-            margin-top: 18px;
-            padding: 14px 32px;
+            margin-top: 20px;
+            padding: 16px 36px;
             background: var(--gradient);
             color: #fff;
             border-radius: 14px;
             text-decoration: none;
             font-weight: 600;
             box-shadow: 0 6px 24px rgba(99,102,241,0.3);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Эластичная анимация */
             position: relative;
             overflow: hidden;
+            letter-spacing: 0.5px;
         }
         .btn-download::after {
             content: "";
             position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
             transition: left 0.6s;
         }
-        .btn-download:hover { transform: translateY(-3px); box-shadow: 0 10px 32px rgba(99,102,241,0.45); }
+        .btn-download:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 32px rgba(99,102,241,0.5); }
         .btn-download:hover::after { left: 100%; }
 
         /* ---- PROJECT CARDS ---- */
         .project {
             background: var(--card);
+            backdrop-filter: blur(12px);
             border: 1px solid var(--border);
             border-radius: var(--radius);
             padding: 40px;
             margin-bottom: 36px;
             box-shadow: var(--shadow);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1.2);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
             position: relative;
             overflow: hidden;
             transform-style: preserve-3d;
             perspective: 1200px;
+            will-change: transform;
         }
+        /* Анимированная градиентная обводка */
         .project::before {
-            content: "";
+            content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 5px;
-            background: var(--gradient);
-            border-radius: var(--radius) 0 0 var(--radius);
-            z-index: 2;
+            inset: -2px;
+            border-radius: var(--radius);
+            padding: 2px;
+            background: conic-gradient(from var(--angle, 0deg), transparent, var(--accent), var(--accent2), var(--accent3), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
         }
+        .project:hover::before {
+            opacity: 1;
+            animation: spin-border 4s linear infinite;
+        }
+        @keyframes spin-border {
+            to { --angle: 360deg; }
+        }
+        @property --angle {
+            syntax: '<angle>';
+            initial-value: 0deg;
+            inherits: false;
+        }
+
+        /* Блик на стекле */
+        .project::after {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle at var(--tilt-x, 50%) var(--tilt-y, 50%), rgba(255,255,255,0.06), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s;
+            pointer-events: none;
+        }
+        .project:hover::after { opacity: 1; }
+
         .project:hover {
-            transform: translateY(-8px) rotateX(1deg);
+            transform: translateY(-8px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(1.005);
             box-shadow: var(--shadow-hover);
-            border-color: rgba(99,102,241,0.3);
+            border-color: transparent;
         }
 
         .project h2 {
@@ -230,34 +262,32 @@
             font-weight: 700;
         }
         .project .dot {
-            width: 16px;
-            height: 16px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background: var(--gradient);
             flex-shrink: 0;
-            box-shadow: 0 0 18px rgba(99,102,241,0.5);
+            box-shadow: 0 0 18px rgba(99,102,241,0.4);
         }
         .subtitle {
             font-weight: 600;
             color: #a5b4fc;
             margin-bottom: 22px;
-            font-size: 1.05rem;
-            letter-spacing: -0.01em;
-            text-transform: uppercase;
             font-size: 0.85rem;
             letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
         .project p { margin: 12px 0; line-height: 1.8; color: #c0c0d0; }
         .metric {
             font-weight: 600;
             color: #34d399;
-            background: rgba(52,211,153,0.1);
+            background: rgba(52,211,153,0.08);
             padding: 6px 14px;
             border-radius: 8px;
             display: inline-block;
             margin: 10px 0;
             font-size: 0.95rem;
-            border: 1px solid rgba(52,211,153,0.2);
+            border: 1px solid rgba(52,211,153,0.15);
         }
         .tech {
             color: var(--muted);
@@ -265,6 +295,15 @@
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
+            font-family: 'JetBrains Mono', monospace; /* Кодерский шрифт */
+        }
+        .tech span {
+            display: inline-block;
+            background: rgba(255,255,255,0.03);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin: 2px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         video {
@@ -273,8 +312,9 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
             border: 1px solid var(--border);
+            width: 100%;
         }
-        video:hover { transform: scale(1.01); box-shadow: 0 14px 40px rgba(0,0,0,0.6); }
+        video:hover { transform: scale(1.01); box-shadow: 0 14px 40px rgba(0,0,0,0.7); }
 
         a { color: #a5b4fc; text-decoration: none; font-weight: 500; transition: color 0.2s; }
         a:hover { color: #c7d2fe; text-decoration: underline; }
@@ -284,44 +324,37 @@
             text-align: center;
             margin-top: 72px;
             color: var(--muted);
-            font-size: 1rem;
+            font-size: 0.95rem;
             padding: 28px 0;
             border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
-        /* ---- ANIMATE ON SCROLL ---- */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .project, .about, .header, .footer, .lava-container {
-            animation: fadeInUp 0.8s cubic-bezier(0.15, 0.85, 0.35, 1) both;
-        }
-        .project:nth-child(2) { animation-delay: 0.1s; }
-        .project:nth-child(3) { animation-delay: 0.2s; }
-        .project:nth-child(4) { animation-delay: 0.3s; }
-        .project:nth-child(5) { animation-delay: 0.4s; }
-        .footer { animation-delay: 0.5s; }
+        /* ---- ПРОКРУТКА ---- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--gradient); border-radius: 10px; }
 
         /* ---- RESPONSIVE ---- */
         @media (max-width: 600px) {
-            .header h1 { font-size: 2.6rem; }
-            .project { padding: 28px 20px; }
+            .header h1 { font-size: 2.8rem; }
+            .project { padding: 28px 16px; }
+            .project .dot { width: 10px; height: 10px; }
+            .footer { flex-direction: column; gap: 10px; }
         }
     </style>
 </head>
 <body>
-    <!-- LAVA LAMP BACKGROUND -->
-    <div class="lava-container">
-        <div class="lava-blob"></div>
-        <div class="lava-blob"></div>
-        <div class="lava-blob"></div>
-    </div>
+    <!-- СПОТЛАЙТ ЗА КУРСОРОМ -->
+    <div id="spotlight"></div>
 
     <div class="container">
         <div class="header">
             <h1>Oleg Boyko</h1>
-            <p>AI Automation Engineer · Building autonomous pipelines that save time & money</p>
+            <p id="typing-text"></p>
             <span class="badge">Open to remote work worldwide</span>
         </div>
 
@@ -334,14 +367,14 @@
         </div>
 
         <!-- Project 1 -->
-        <div class="project">
+        <div class="project" data-tilt>
             <h2><span class="dot"></span> Automated E-Commerce Product Card Generator</h2>
             <div class="subtitle">→ 95% faster content creation</div>
             <p><strong>Problem:</strong> Manually creating product cards takes hours per item and requires a designer.</p>
             <p><strong>Solution:</strong> An autonomous pipeline using n8n, local LLM, and ComfyUI. The LLM analyzes the product name and dynamically creates a detailed visual prompt, while the pipeline generates a photorealistic card. The system can creatively adapt to the input — for example, it generated a "New Balance" concept from a "Nike" file.</p>
             <p class="metric">📈 Reduces card creation time from 1 hour to 2 minutes.</p>
-            <p class="tech">🛠️ n8n · ComfyUI · JuggernautXL · Google Drive API · LM Studio</p>
-            <video width="100%" controls>
+            <p class="tech"><span>n8n</span> · <span>ComfyUI</span> · <span>JuggernautXL</span> · <span>Google Drive API</span> · <span>LM Studio</span></p>
+            <video controls preload="metadata">
                 <source src="videos/compressed_022020.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -349,14 +382,14 @@
         </div>
 
         <!-- Project 2 -->
-        <div class="project">
+        <div class="project" data-tilt>
             <h2><span class="dot"></span> Autonomous AI Social Media Agent</h2>
             <div class="subtitle">→ Transforms a single topic into a ready-to-post visual series</div>
             <p><strong>Problem:</strong> Marketing teams spend hours brainstorming and creating on-brand visuals for every campaign.</p>
             <p><strong>Solution:</strong> An automated agent powered by an LLM and ComfyUI. The LLM generates a creative caption, while a set of curated, high-quality image templates ensures a consistent and professional visual style for every product. For example, it instantly produced a series of images for an "orange fresh juice" campaign.</p>
             <p class="metric">📈 Automates ideation + image generation in one reliable flow.</p>
-            <p class="tech">🛠️ n8n · ComfyUI · Phi-4 14B · SplitInBatches</p>
-            <video width="100%" controls>
+            <p class="tech"><span>n8n</span> · <span>ComfyUI</span> · <span>Phi-4 14B</span> · <span>SplitInBatches</span></p>
+            <video controls preload="metadata">
                 <source src="videos/Demo2.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -364,14 +397,14 @@
         </div>
 
         <!-- Project 3 -->
-        <div class="project">
+        <div class="project" data-tilt>
             <h2><span class="dot"></span> Real-Time Customer Feedback Analyzer</h2>
             <div class="subtitle">→ Instant sentiment & topic extraction from reviews</div>
             <p><strong>Problem:</strong> Manually analyzing thousands of customer reviews is slow, inconsistent, and delays critical business decisions.</p>
             <p><strong>Solution:</strong> An automated pipeline using a local LLM (Phi-4 14B) that instantly classifies sentiment, category, and key topics of reviews and logs results into Google Sheets for real-time monitoring.</p>
-            <p class="metric">📈 Reduces feedback processing time by 95% · Enables immediate detection of issues like poor delivery or service.</p>
-            <p class="tech">🛠️ n8n · Google Sheets API · Phi-4 14B · REST API · PowerShell scripting</p>
-            <video width="100%" controls>
+            <p class="metric">📈 Reduces feedback processing time by 95% · Enables immediate detection of issues.</p>
+            <p class="tech"><span>n8n</span> · <span>Google Sheets API</span> · <span>Phi-4 14B</span> · <span>REST API</span> · <span>PowerShell</span></p>
+            <video controls preload="metadata">
                 <source src="videos/DEMO.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
@@ -379,14 +412,94 @@
         </div>
         
        <!-- What I'm Learning -->
-        <div class="project" style="text-align: center;">
+        <div class="project" data-tilt style="text-align: center;">
             <h2>📚 Currently Learning</h2>
             <p style="color: var(--muted);">LTX Video, advanced Python for AI, cloud deployment (RunPod, Docker Compose).</p>
         </div>
 
         <div class="footer">
-            📧 oleg.boyko.02@list.ru · 🌐 <a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank">LinkedIn</a> · 🐙 <a href="https://github.com/jesys22" target="_blank">GitHub</a>
+            <span>📧 oleg.boyko.02@list.ru</span>
+            <span>🌐 <a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank">LinkedIn</a></span>
+            <span>🐙 <a href="https://github.com/jesys22" target="_blank">GitHub</a></span>
         </div>
     </div>
+
+    <!-- МАГИЯ JAVASCRIPT -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Машинописный текст (Typewriter)
+            const textArray = [
+                "AI Automation Engineer · Building autonomous pipelines that save time & money",
+                "n8n Expert · ComfyUI Specialist · LLM Integrator",
+                "Autonomous AI pipelines · High-quality content generation"
+            ];
+            let textIndex = 0;
+            let charIndex = 0;
+            const typingElement = document.getElementById('typing-text');
+            
+            function typeText() {
+                if (charIndex < textArray[textIndex].length) {
+                    typingElement.innerHTML = textArray[textIndex].substring(0, charIndex + 1) + '<span class="cursor-blink"></span>';
+                    charIndex++;
+                    setTimeout(typeText, 30 + Math.random() * 20); // Скорость печати
+                } else {
+                    setTimeout(eraseText, 3000); // Пауза перед стиранием
+                }
+            }
+
+            function eraseText() {
+                if (charIndex > 0) {
+                    typingElement.innerHTML = textArray[textIndex].substring(0, charIndex - 1) + '<span class="cursor-blink"></span>';
+                    charIndex--;
+                    setTimeout(eraseText, 15);
+                } else {
+                    textIndex = (textIndex + 1) % textArray.length;
+                    setTimeout(typeText, 500);
+                }
+            }
+            typeText();
+
+            // 2. Спотлайт за мышью
+            const spotlight = document.getElementById('spotlight');
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX;
+                const y = e.clientY;
+                spotlight.style.setProperty('--mouse-x', x + 'px');
+                spotlight.style.setProperty('--mouse-y', y + 'px');
+            });
+
+            // 3. 3D Наклон карточек (Tilt effect)
+            const cards = document.querySelectorAll('.project[data-tilt]');
+            cards.forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = ((y - centerY) / centerY) * -8; // Угол наклона по X (вверх-вниз)
+                    const rotateY = ((x - centerX) / centerX) * 8;  // Угол наклона по Y (влево-вправо)
+
+                    card.style.setProperty('--tilt-x', rotateX + 'deg');
+                    card.style.setProperty('--tilt-y', rotateY + 'deg');
+                    card.style.setProperty('--tilt-x-pos', (x / rect.width) * 100 + '%');
+                    card.style.setProperty('--tilt-y-pos', (y / rect.height) * 100 + '%');
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.setProperty('--tilt-x', '0deg');
+                    card.style.setProperty('--tilt-y', '0deg');
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1.2)';
+                    }, 100);
+                });
+                
+                card.addEventListener('mouseenter', () => {
+                    card.style.transition = 'all 0.1s ease-out';
+                });
+            });
+        });
+    </script>
 </body>
 </html>
