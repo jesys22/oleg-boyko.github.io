@@ -3,515 +3,744 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Oleg Boyko – AI Automation Engineer</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
-    <!-- Импорт премиальных шрифтов -->
+    <title>Oleg Boyko — AI Automation Engineer</title>
+    <meta name="description" content="AI Automation Engineer building autonomous pipelines with n8n, ComfyUI and local LLMs. 4 production projects: content generation, social media agents, feedback analysis, document processing.">
+
+    <!-- Open Graph: добавь ссылку на превью-изображение 1200x630 в og:image -->
+    <meta property="og:title" content="Oleg Boyko — AI Automation Engineer">
+    <meta property="og:description" content="Autonomous AI pipelines that save time and money: n8n, ComfyUI, local LLMs, Python, Docker.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jesys22.github.io/oleg-boyko.github.io/">
+    <!-- <meta property="og:image" content="https://jesys22.github.io/oleg-boyko.github.io/og-image.jpg"> -->
+
+    <!-- Иконка: вместо эмодзи — монограмма OB -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%236366f1'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='white' text-anchor='middle'>OB</text></svg>">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,500;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    
-    <meta property="og:title" content="Oleg Boyko — AI Automation Engineer">
-    <meta property="og:description" content="Building autonomous AI pipelines that save time & money. ComfyUI, n8n, LLMs.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://jesys22.github.io/oleg-boyko.github.io">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --bg: #07070b; /* Чуть темнее для контраста с подсветкой */
-            --card: rgba(19, 19, 26, 0.6); /* Полупрозрачный для эффекта стекла */
-            --text: #e8e8f0;
-            --muted: #9090a0;
+            --bg: #08080d;
+            --panel: rgba(255, 255, 255, 0.03);
+            --panel-hover: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.09);
+            --border-accent: rgba(99, 102, 241, 0.45);
+            --text: #eceaf2;
+            --body: #c3c2d2;
+            --muted: #9795ab;
             --accent: #6366f1;
-            --accent2: #a855f7;
-            --accent3: #3b82f6;
-            --border: rgba(255,255,255,0.08);
-            --radius: 28px;
-            --shadow: 0 12px 40px rgba(0,0,0,0.6);
-            --shadow-hover: 0 20px 60px rgba(99,102,241,0.2), 0 12px 30px rgba(168,85,247,0.1);
-            --gradient: linear-gradient(135deg, #6366f1, #a855f7, #3b82f6);
-            --angle: 0deg; /* Запасное значение для --angle, чтобы не сломалось в Firefox */
+            --accent-bright: #a5b4fc;
+            --accent-soft: rgba(99, 102, 241, 0.12);
+            --green: #34d399;
+            --green-soft: rgba(52, 211, 153, 0.1);
+            --radius: 20px;
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
         }
-        
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: var(--bg);
             color: var(--text);
-            display: flex;
-            justify-content: center;
-            padding: 40px 20px;
-            position: relative;
+            line-height: 1.6;
             overflow-x: hidden;
-            min-height: 100vh;
         }
 
-        /* ---- СПОТЛАЙТ ЗА КУРСОРОМ ---- */
+        ::selection { background: var(--accent); color: #fff; }
+
+        :focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; border-radius: 4px; }
+
+        /* ---------- Spotlight за курсором (лёгкий, без перерисовок каждый кадр) ---------- */
         #spotlight {
             position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
+            inset: 0;
             pointer-events: none;
             z-index: 0;
-            background: radial-gradient(circle 600px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(99, 102, 241, 0.06) 0%, transparent 80%);
-            transition: background 0.1s ease-out;
+            background: radial-gradient(560px circle at var(--mx, -600px) var(--my, -600px), rgba(99, 102, 241, 0.07), transparent 70%);
         }
 
-        .container {
-            max-width: 960px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
+        .container { max-width: 920px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
 
-        /* ---- HEADER ---- */
-        .header {
-            text-align: center;
-            margin-bottom: 64px;
-            position: relative;
-            padding: 60px 0 40px;
-        }
-        .header::before {
-            content: "";
-            position: absolute;
+        /* ---------- Topbar ---------- */
+        .topbar {
+            position: sticky;
             top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 4px;
-            background: var(--gradient);
-            border-radius: 2px;
+            z-index: 10;
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            background: rgba(8, 8, 13, 0.7);
+            border-bottom: 1px solid var(--border);
         }
-        .header h1 {
-            font-size: 4.5rem;
+        .topbar-inner {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text);
+            text-decoration: none;
+        }
+        .brand-mark {
+            width: 28px; height: 28px;
+            border-radius: 8px;
+            background: var(--accent);
+            display: grid;
+            place-items: center;
+            font-size: 0.72rem;
             font-weight: 800;
-            letter-spacing: -0.05em;
-            background: var(--gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 16px;
-            line-height: 1.1;
+            color: #fff;
         }
-        .header p {
-            font-size: 1.2rem;
+        .nav { display: flex; align-items: center; gap: 26px; }
+        .nav a {
             color: var(--muted);
-            font-weight: 400;
-            letter-spacing: 0.02em;
-            min-height: 2rem; /* Чтобы текст не скакал при печати */
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
         }
-        /* Мигающий курсор для машинописного текста */
-        .cursor-blink {
+        .nav a:hover { color: var(--text); }
+        .nav .nav-cv {
+            color: var(--accent-bright);
+            border: 1px solid var(--border-accent);
+            padding: 7px 16px;
+            border-radius: 10px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav .nav-cv:hover { background: var(--accent-soft); color: #fff; text-decoration: none; }
+
+        /* ---------- Hero ---------- */
+        .hero { padding: 96px 0 56px; text-align: center; }
+
+        .hero-bar {
+            width: 56px; height: 3px;
+            background: var(--accent);
+            border-radius: 2px;
+            margin: 0 auto 28px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.8rem, 8vw, 4.4rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.05;
+        }
+        .hero h1 .accent { color: var(--accent-bright); }
+
+        .role {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+            color: var(--muted);
+            margin-top: 18px;
+            min-height: 1.6em;
+        }
+        .cursor {
             display: inline-block;
-            width: 2px;
-            height: 1.2rem;
-            background: #a5b4fc;
-            margin-left: 2px;
+            width: 8px; height: 1.05em;
+            background: var(--accent-bright);
+            margin-left: 3px;
             vertical-align: text-bottom;
-            animation: blink 0.8s step-end infinite;
+            animation: blink 0.9s step-end infinite;
         }
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+        @keyframes blink { 50% { opacity: 0; } }
 
         .badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            background: rgba(99,102,241,0.1);
-            border: 1px solid rgba(99,102,241,0.25);
-            color: #a5b4fc;
-            padding: 8px 24px;
+            gap: 9px;
+            margin-top: 26px;
+            padding: 8px 20px;
             border-radius: 99px;
-            font-size: 0.95rem;
+            background: var(--green-soft);
+            border: 1px solid rgba(52, 211, 153, 0.25);
+            color: var(--green);
+            font-size: 0.88rem;
             font-weight: 500;
-            margin-top: 18px;
-            backdrop-filter: blur(10px);
         }
-        /* Индикатор "В сети" (зеленая точка) */
         .badge::before {
             content: '';
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #34d399;
+            width: 7px; height: 7px;
             border-radius: 50%;
-            box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
-            animation: pulse-dot 2s ease-in-out infinite;
+            background: var(--green);
+            animation: pulse 2.2s ease-in-out infinite;
         }
-        @keyframes pulse-dot {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
+        @keyframes pulse { 50% { opacity: 0.35; } }
 
-        /* ---- ABOUT ---- */
+        /* ---------- About ---------- */
         .about {
+            margin: 0 auto 32px;
+            max-width: 720px;
+            padding: 34px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
             text-align: center;
-            margin: 0 auto 60px;
-            max-width: 680px;
-            font-size: 1.1rem;
-            color: var(--muted);
-            line-height: 1.7;
-            position: relative;
-            padding: 32px;
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
         }
-        .about strong { color: #a5b4fc; font-weight: 600; }
+        .about p { color: var(--body); font-size: 1.06rem; line-height: 1.75; }
+        .about strong { color: var(--accent-bright); font-weight: 600; }
 
-        .btn-download {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 16px 36px;
-            background: var(--gradient);
-            color: #fff;
-            border-radius: 14px;
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0 6px 24px rgba(99,102,241,0.3);
-            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); /* Эластичная анимация */
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 0.5px;
-        }
-        .btn-download::after {
-            content: "";
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            transition: left 0.6s;
-        }
-        .btn-download:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 12px 32px rgba(99,102,241,0.5); }
-        .btn-download:hover::after { left: 100%; }
-
-        /* ---- PROJECT CARDS ---- */
-        .project {
-            background: var(--card);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 40px;
-            margin-bottom: 36px;
-            box-shadow: var(--shadow);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.2);
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            perspective: 1200px;
-            will-change: transform;
-        }
-        /* Анимированная градиентная обводка */
-        .project::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: var(--radius);
-            padding: 2px;
-            background: conic-gradient(from var(--angle, 0deg), transparent, var(--accent), var(--accent2), var(--accent3), transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.4s;
-            pointer-events: none;
-        }
-        .project:hover::before {
-            opacity: 1;
-            animation: spin-border 4s linear infinite;
-        }
-        @keyframes spin-border {
-            to { --angle: 360deg; }
-        }
-        @property --angle {
-            syntax: '<angle>';
-            initial-value: 0deg;
-            inherits: false;
-        }
-
-        /* Блик на стекле */
-        .project::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: radial-gradient(circle at var(--tilt-x, 50%) var(--tilt-y, 50%), rgba(255,255,255,0.06), transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s;
-            pointer-events: none;
-        }
-        .project:hover::after { opacity: 1; }
-
-        .project:hover {
-            transform: translateY(-8px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(1.005);
-            box-shadow: var(--shadow-hover);
-            border-color: transparent;
-        }
-
-        .project h2 {
-            font-size: 1.7rem;
-            display: flex;
+        .btn-row { display: flex; gap: 14px; justify-content: center; margin-top: 26px; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex;
             align-items: center;
-            gap: 14px;
-            margin-bottom: 18px;
-            color: #f0f0ff;
-            font-weight: 700;
-        }
-        .project .dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: var(--gradient);
-            flex-shrink: 0;
-            box-shadow: 0 0 18px rgba(99,102,241,0.4);
-        }
-        .subtitle {
+            gap: 9px;
+            padding: 13px 26px;
+            border-radius: 12px;
             font-weight: 600;
-            color: #a5b4fc;
-            margin-bottom: 22px;
-            font-size: 0.85rem;
-            letter-spacing: 0.05em;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: transform 0.25s var(--ease), background 0.25s, border-color 0.25s, color 0.25s;
+        }
+        .btn svg { width: 16px; height: 16px; }
+        .btn-primary { background: var(--accent); color: #fff; }
+        .btn-primary:hover { background: #4f52e0; transform: translateY(-2px); }
+        .btn-ghost { border: 1px solid var(--border); color: var(--text); }
+        .btn-ghost:hover { border-color: var(--border-accent); background: var(--panel-hover); transform: translateY(-2px); }
+
+        /* ---------- Section headings ---------- */
+        .section-head { margin: 80px 0 36px; }
+        .kicker {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
+            color: var(--accent-bright);
         }
-        .project p { margin: 12px 0; line-height: 1.8; color: #c0c0d0; }
-        .metric {
-            font-weight: 600;
-            color: #34d399;
-            background: rgba(52,211,153,0.08);
-            padding: 6px 14px;
-            border-radius: 8px;
-            display: inline-block;
-            margin: 10px 0;
-            font-size: 0.95rem;
-            border: 1px solid rgba(52,211,153,0.15);
+        .section-head h2 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-top: 8px;
         }
-        .tech {
+
+        /* ---------- Project cards ---------- */
+        .project {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 36px;
+            margin-bottom: 28px;
+            transition: transform 0.3s var(--ease), border-color 0.3s, background 0.3s;
+        }
+        .project:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-accent);
+            background: var(--panel-hover);
+        }
+
+        .project-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
+        .project h3 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
+        .project-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
             color: var(--muted);
-            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .project .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent-bright);
+            display: block;
+            margin: 18px 0 6px;
+        }
+        .project p { color: var(--body); font-size: 0.99rem; }
+
+        .metric {
+            display: inline-block;
             margin-top: 20px;
+            padding: 7px 14px;
+            border-radius: 9px;
+            background: var(--green-soft);
+            border: 1px solid rgba(52, 211, 153, 0.2);
+            color: var(--green);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 22px;
             padding-top: 20px;
             border-top: 1px solid var(--border);
-            font-family: 'JetBrains Mono', monospace; /* Кодерский шрифт */
+            list-style: none;
         }
-        .tech span {
-            display: inline-block;
-            background: rgba(255,255,255,0.03);
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin: 2px;
-            border: 1px solid rgba(255,255,255,0.05);
+        .tech li {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 4px 10px;
+            border-radius: 7px;
         }
 
         video {
-            border-radius: 16px;
-            margin-top: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: all 0.3s ease;
-            border: 1px solid var(--border);
             width: 100%;
+            display: block;
+            margin-top: 24px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: #000;
         }
-        video:hover { transform: scale(1.01); box-shadow: 0 14px 40px rgba(0,0,0,0.7); }
 
-        a { color: #a5b4fc; text-decoration: none; font-weight: 500; transition: color 0.2s; }
-        a:hover { color: #c7d2fe; text-decoration: underline; }
+        .links-row { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 18px; }
+        .links-row a {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--accent-bright);
+            font-size: 0.92rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s, color 0.2s;
+        }
+        .links-row a:hover { border-bottom-color: var(--accent-bright); }
+        .links-row svg { width: 15px; height: 15px; }
 
-        /* ---- FOOTER ---- */
-        .footer {
-            text-align: center;
-            margin-top: 72px;
+        /* ---------- Диаграмма пайплайна (Project 4) ---------- */
+        .diagram {
+            margin-top: 24px;
+            padding: 22px;
+            border: 1px dashed var(--border);
+            border-radius: 14px;
+            overflow-x: auto;
+        }
+        .diagram svg { display: block; min-width: 620px; width: 100%; height: auto; }
+        .diagram-caption {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
             color: var(--muted);
-            font-size: 0.95rem;
-            padding: 28px 0;
+            margin-top: 12px;
+            text-align: center;
+        }
+
+        /* ---------- Learning strip ---------- */
+        .learning {
+            text-align: center;
+            padding: 30px;
+        }
+        .learning h3 { font-size: 1.1rem; font-weight: 700; }
+        .learning p { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
+
+        /* ---------- Contact ---------- */
+        .contact {
+            margin: 88px 0 64px;
+            padding: 56px 36px;
+            text-align: center;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+        .contact h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 800; letter-spacing: -0.02em; }
+        .contact p { color: var(--muted); margin: 14px auto 0; max-width: 460px; }
+
+        /* ---------- Footer ---------- */
+        .footer {
             border-top: 1px solid var(--border);
+            padding: 34px 24px 44px;
+        }
+        .footer-inner {
+            max-width: 920px;
+            margin: 0 auto;
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
+            align-items: center;
             gap: 20px;
             flex-wrap: wrap;
+            color: var(--muted);
+            font-size: 0.88rem;
+        }
+        .footer-links { display: flex; gap: 20px; }
+        .footer-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover { color: var(--text); }
+        .footer-links svg { width: 16px; height: 16px; }
+
+        /* ---------- Reveal on scroll ---------- */
+        .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+        .reveal.in { opacity: 1; transform: none; }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 640px) {
+            .hero { padding: 64px 0 40px; }
+            .project { padding: 26px 20px; }
+            .nav { gap: 16px; }
+            .nav a:not(.nav-cv) { display: none; }
+            .about { padding: 26px 20px; }
         }
 
-        /* ---- ПРОКРУТКА ---- */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--gradient); border-radius: 10px; }
-
-        /* ---- RESPONSIVE ---- */
-        @media (max-width: 600px) {
-            .header h1 { font-size: 2.8rem; }
-            .project { padding: 28px 16px; }
-            .project .dot { width: 10px; height: 10px; }
-            .footer { flex-direction: column; gap: 10px; }
+        /* ---------- Reduced motion ---------- */
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            .cursor, .badge::before { animation: none; }
+            .project, .btn, .reveal { transition: none; }
+            .reveal { opacity: 1; transform: none; }
+            #spotlight { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- СПОТЛАЙТ ЗА КУРСОРОМ -->
+
     <div id="spotlight"></div>
 
-    <div class="container">
-        <div class="header">
-            <h1>Oleg Boyko</h1>
-            <p id="typing-text"></p>
-            <span class="badge">Open to remote work worldwide</span>
+    <header class="topbar">
+        <div class="topbar-inner">
+            <a class="brand" href="#top"><span class="brand-mark">OB</span>Oleg Boyko</a>
+            <nav class="nav">
+                <a href="#projects">Projects</a>
+                <!-- ВАЖНО: переименуй файл резюме в Oleg_Boyko_CV.pdf и положи рядом с index.html -->
+                <a class="nav-cv" href="Oleg_Boyko_CV.pdf" download>CV</a>
+            </nav>
         </div>
+    </header>
 
-        <!-- About Me -->
-        <div class="about">
+    <main class="container" id="top">
+
+        <!-- ================= HERO ================= -->
+        <section class="hero">
+            <div class="hero-bar"></div>
+            <h1>Oleg <span class="accent">Boyko</span></h1>
+            <p class="role"><span id="typing"></span><span class="cursor"></span></p>
+            <span class="badge">Open to remote work worldwide</span>
+        </section>
+
+        <!-- ================= ABOUT ================= -->
+        <section class="about reveal" id="about">
             <p>
-                AI Automation Engineer with a background in graphic design. I build autonomous AI pipelines that save companies time and money. My stack: <strong>n8n, ComfyUI, LM Studio, Python, Docker</strong>. Open to remote work worldwide.
+                AI Automation Engineer with a background in graphic design. I build autonomous
+                pipelines that save companies time and money — from content generation to document
+                processing. Core stack: <strong>n8n</strong>, <strong>ComfyUI</strong>,
+                <strong>LM Studio</strong>, <strong>Python</strong>, <strong>Docker</strong>.
             </p>
-            <a href="Oleg Boyko000.pdf" class="btn-download">📄 Download CV</a>
+            <div class="btn-row">
+                <!-- ВАЖНО: то же самое — файл должен называться Oleg_Boyko_CV.pdf -->
+                <a class="btn btn-primary" href="Oleg_Boyko_CV.pdf" download>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download CV
+                </a>
+                <a class="btn btn-ghost" href="#projects">View projects</a>
+            </div>
+        </section>
+
+        <!-- ================= PROJECTS ================= -->
+        <div class="section-head" id="projects">
+            <span class="kicker">01 — Work</span>
+            <h2>Selected Projects</h2>
         </div>
 
         <!-- Project 1 -->
-        <div class="project" data-tilt>
-            <h2><span class="dot"></span> Automated E-Commerce Product Card Generator</h2>
-            <div class="subtitle">→ 95% faster content creation</div>
-            <p><strong>Problem:</strong> Manually creating product cards takes hours per item and requires a designer.</p>
-            <p><strong>Solution:</strong> An autonomous pipeline using n8n, local LLM, and ComfyUI. The LLM analyzes the product name and dynamically creates a detailed visual prompt, while the pipeline generates a photorealistic card. The system can creatively adapt to the input — for example, it generated a "New Balance" concept from a "Nike" file.</p>
-            <p class="metric">📈 Reduces card creation time from 1 hour to 2 minutes.</p>
-            <p class="tech"><span>n8n</span> · <span>ComfyUI</span> · <span>JuggernautXL</span> · <span>Google Drive API</span> · <span>LM Studio</span></p>
-            <video controls preload="metadata">
+        <article class="project reveal">
+            <div class="project-top">
+                <h3>Automated E-Commerce Product Card Generator</h3>
+                <span class="project-num">/01</span>
+            </div>
+
+            <span class="label">Problem</span>
+            <p>Creating a product card took about an hour per item and required a designer for every new product.</p>
+
+            <span class="label">Solution</span>
+            <p>An autonomous n8n pipeline: it reads product data, a local LLM writes a detailed image-generation prompt from the product name, ComfyUI (JuggernautXL) renders the card, and the result is saved to Google Drive. The system adapts creatively to the input — for example, it generated a &ldquo;New Balance&rdquo; concept from a Nike source file.</p>
+
+            <span class="metric">~1 hour of manual work &rarr; ~2 minutes per card</span>
+
+            <ul class="tech">
+                <li>n8n</li><li>ComfyUI</li><li>JuggernautXL</li><li>LM Studio</li><li>Google Drive API</li>
+            </ul>
+
+            <!-- Совет: сделай кадр из видео постером — poster="img/project1-poster.jpg" -->
+            <video controls preload="metadata" playsinline>
                 <source src="videos/compressed_022020.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <p style="margin-top:12px;"><a href="workflows/Automated E-Commerce Product Card Generator.json">📂 View Workflow JSON</a></p>
-        </div>
+
+            <div class="links-row">
+                <a href="workflows/Automated%20E-Commerce%20Product%20Card%20Generator.json">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    Workflow JSON
+                </a>
+            </div>
+        </article>
 
         <!-- Project 2 -->
-        <div class="project" data-tilt>
-            <h2><span class="dot"></span> Autonomous AI Social Media Agent</h2>
-            <div class="subtitle">→ Transforms a single topic into a ready-to-post visual series</div>
-            <p><strong>Problem:</strong> Marketing teams spend hours brainstorming and creating on-brand visuals for every campaign.</p>
-            <p><strong>Solution:</strong> An automated agent powered by an LLM and ComfyUI. The LLM generates a creative caption, while a set of curated, high-quality image templates ensures a consistent and professional visual style for every product. For example, it instantly produced a series of images for an "orange fresh juice" campaign.</p>
-            <p class="metric">📈 Automates ideation + image generation in one reliable flow.</p>
-            <p class="tech"><span>n8n</span> · <span>ComfyUI</span> · <span>Phi-4 14B</span> · <span>SplitInBatches</span></p>
-            <video controls preload="metadata">
+        <article class="project reveal">
+            <div class="project-top">
+                <h3>Autonomous AI Social Media Agent</h3>
+                <span class="project-num">/02</span>
+            </div>
+
+            <span class="label">Problem</span>
+            <p>Marketing teams spend hours on ideation and design for every single campaign.</p>
+
+            <span class="label">Solution</span>
+            <p>An n8n agent that turns one topic into a ready-to-post visual series. A local LLM (Phi-4 14B) writes the captions, while a fixed set of brand templates in ComfyUI keeps every visual on-style. SplitInBatches generates the whole series in one run — e.g. a complete &ldquo;orange fresh juice&rdquo; campaign from a single input.</p>
+
+            <span class="metric">One topic &rarr; a full visual series in a single run</span>
+
+            <ul class="tech">
+                <li>n8n</li><li>ComfyUI</li><li>Phi-4 14B</li><li>SplitInBatches</li>
+            </ul>
+
+            <video controls preload="metadata" playsinline>
                 <source src="videos/Demo2.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <p style="margin-top:12px;"><a href="workflows/Autonomous AI Social Media Agent.json">📂 View Workflow JSON</a></p>
-        </div>
+
+            <div class="links-row">
+                <a href="workflows/Autonomous%20AI%20Social%20Media%20Agent.json">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    Workflow JSON
+                </a>
+            </div>
+        </article>
 
         <!-- Project 3 -->
-        <div class="project" data-tilt>
-            <h2><span class="dot"></span> Real-Time Customer Feedback Analyzer</h2>
-            <div class="subtitle">→ Instant sentiment & topic extraction from reviews</div>
-            <p><strong>Problem:</strong> Manually analyzing thousands of customer reviews is slow, inconsistent, and delays critical business decisions.</p>
-            <p><strong>Solution:</strong> An automated pipeline using a local LLM (Phi-4 14B) that instantly classifies sentiment, category, and key topics of reviews and logs results into Google Sheets for real-time monitoring.</p>
-            <p class="metric">📈 Reduces feedback processing time by 95% · Enables immediate detection of issues.</p>
-            <p class="tech"><span>n8n</span> · <span>Google Sheets API</span> · <span>Phi-4 14B</span> · <span>REST API</span> · <span>PowerShell</span></p>
-            <video controls preload="metadata">
+        <article class="project reveal">
+            <div class="project-top">
+                <h3>Real-Time Customer Feedback Analyzer</h3>
+                <span class="project-num">/03</span>
+            </div>
+
+            <span class="label">Problem</span>
+            <p>Manual analysis of thousands of reviews is slow, inconsistent, and delays business decisions.</p>
+
+            <span class="label">Solution</span>
+            <p>An automated pipeline where a local LLM (Phi-4 14B) classifies sentiment, category and key topics for each review, then logs the results into Google Sheets for real-time monitoring — issues surface the moment they appear.</p>
+
+            <!-- Совет: усиль доказательством — скриншот Google Sheets с обработанными отзывами -->
+            <span class="metric">~95% less processing time &middot; instant issue detection</span>
+
+            <ul class="tech">
+                <li>n8n</li><li>Phi-4 14B</li><li>Google Sheets API</li><li>REST API</li><li>PowerShell</li>
+            </ul>
+
+            <video controls preload="metadata" playsinline>
                 <source src="videos/DEMO.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
-            <p style="margin-top:12px;"><a href="workflows/Real-Time Customer Feedback Analyzer.json">📂 View Workflow JSON</a></p>
-        </div>
+
+            <div class="links-row">
+                <a href="workflows/Real-Time%20Customer%20Feedback%20Analyzer.json">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                    Workflow JSON
+                </a>
+            </div>
+        </article>
 
         <!-- Project 4 -->
-        <div class="project" data-tilt>
-            <h2><span class="dot"></span> Autonomous Document Processing Pipeline (ADPP)</h2>
-            <div class="subtitle">→ 100% local AI – no cloud, no limits</div>
-            <p><strong>Problem:</strong> Manually extracting data from invoices and PDFs takes hours and is error-prone.</p>
-            <p><strong>Solution:</strong> A full-stack AI pipeline using FastAPI, Tesseract OCR, and a local LLM (via LM Studio) that automatically extracts structured data (invoice number, date, vendor, total) and saves it to a database with a Streamlit dashboard.</p>
-            <p class="metric">📈 Reduces document processing time from 15 minutes to under 30 seconds per invoice.</p>
-            <p class="tech"><span>Python</span> · <span>FastAPI</span> · <span>Tesseract OCR</span> · <span>LM Studio (phi-line_14b)</span> · <span>SQLite</span> · <span>Streamlit</span> · <span>Docker</span></p>
-            <!-- Сюда ты вставишь свои скриншоты, когда они будут готовы -->
-            <p style="margin-top:12px;"><a href="https://github.com/jesys22/ai_document_pipeline" target="_blank">📂 View on GitHub</a></p>
-        </div>
-        
-       <!-- What I'm Learning -->
-        <div class="project" data-tilt style="text-align: center;">
-            <h2>📚 Currently Learning</h2>
-            <p style="color: var(--muted);">LTX Video, advanced Python for AI, cloud deployment (RunPod, Docker Compose).</p>
+        <article class="project reveal">
+            <div class="project-top">
+                <h3>Autonomous Document Processing Pipeline (ADPP)</h3>
+                <span class="project-num">/04</span>
+            </div>
+
+            <span class="label">Problem</span>
+            <p>Manually extracting data from invoices and PDFs takes hours and is error-prone.</p>
+
+            <span class="label">Solution</span>
+            <p>A full-stack, 100% local pipeline: FastAPI receives documents, Tesseract OCR extracts the text, a local LLM (via LM Studio) parses structured fields (invoice number, date, vendor, total), results are stored in SQLite and visualized in a Streamlit dashboard. No cloud, no per-document limits.</p>
+
+            <span class="metric">15 minutes &rarr; under 30 seconds per invoice</span>
+
+            <ul class="tech">
+                <li>Python</li><li>FastAPI</li><li>Tesseract OCR</li><li>LM Studio</li><li>SQLite</li><li>Streamlit</li><li>Docker</li>
+            </ul>
+
+            <!-- Схема архитектуры вместо пустого места: честно показывает системность проекта -->
+            <div class="diagram">
+                <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, monospace" font-size="12">
+                    <defs>
+                        <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                            <path d="M0,0 L6,3 L0,6" fill="none" stroke="#6366f1" stroke-width="1.2"/>
+                        </marker>
+                    </defs>
+                    <!-- nodes -->
+                    <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)" stroke-width="1">
+                        <rect x="10"   y="45" width="110" height="40" rx="9"/>
+                        <rect x="155"  y="45" width="100" height="40" rx="9"/>
+                        <rect x="290"  y="45" width="110" height="40" rx="9"/>
+                        <rect x="435"  y="45" width="105" height="40" rx="9"/>
+                        <rect x="575"  y="45" width="135" height="40" rx="9"/>
+                    </g>
+                    <!-- arrows -->
+                    <g stroke="#6366f1" stroke-width="1.2">
+                        <line x1="120" y1="65" x2="150" y2="65" marker-end="url(#arrow)"/>
+                        <line x1="255" y1="65" x2="285" y2="65" marker-end="url(#arrow)"/>
+                        <line x1="400" y1="65" x2="430" y2="65" marker-end="url(#arrow)"/>
+                        <line x1="540" y1="65" x2="570" y2="65" marker-end="url(#arrow)"/>
+                    </g>
+                    <!-- labels -->
+                    <g fill="#c3c2d2" text-anchor="middle">
+                        <text x="65"  y="69">PDF invoice</text>
+                        <text x="205" y="69">FastAPI</text>
+                        <text x="345" y="69">Tesseract</text>
+                        <text x="487" y="69">LLM parse</text>
+                        <text x="642" y="69">SQLite + UI</text>
+                    </g>
+                </svg>
+                <p class="diagram-caption">pipeline architecture — local only, no cloud</p>
+            </div>
+
+            <!-- Совет: когда будут готовы — добавь скриншоты Streamlit-дашборда и README с демо-гифкой на GitHub -->
+            <div class="links-row">
+                <a href="https://github.com/jesys22/ai_document_pipeline" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+                    GitHub repository
+                </a>
+            </div>
+        </article>
+
+        <!-- Learning -->
+        <div class="project learning reveal">
+            <h3>Currently learning</h3>
+            <p>LTX Video &middot; advanced Python for AI &middot; cloud deployment (RunPod, Docker Compose)</p>
         </div>
 
-        <div class="footer">
-            <span>📧 oleg.boyko.02@list.ru</span>
-            <span>🌐 <a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank">LinkedIn</a></span>
-            <span>🐙 <a href="https://github.com/jesys22" target="_blank">GitHub</a></span>
-        </div>
-    </div>
+        <!-- ================= CONTACT ================= -->
+        <section class="contact reveal" id="contact">
+            <span class="kicker">02 — Contact</span>
+            <h2>Have a process to automate?</h2>
+            <p>I&rsquo;m open to remote opportunities worldwide. Send me a message — I usually reply within a day.</p>
+            <div class="btn-row">
+                <a class="btn btn-primary" href="mailto:oleg.boyko.02@list.ru">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                    Get in touch
+                </a>
+                <a class="btn btn-ghost" href="Oleg_Boyko_CV.pdf" download>Download CV</a>
+            </div>
+        </section>
+    </main>
 
-    <!-- МАГИЯ JAVASCRIPT -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span>&copy; 2026 Oleg Boyko</span>
+            <div class="footer-links">
+                <a href="mailto:oleg.boyko.02@list.ru">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                    Email
+                </a>
+                <a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.78C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.78 24h20.44c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z"/></svg>
+                    LinkedIn
+                </a>
+                <a href="https://github.com/jesys22" target="_blank" rel="noopener">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+                    GitHub
+                </a>
+            </div>
+        </div>
+    </footer>
+
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 1. Машинописный текст (Typewriter)
-            const textArray = [
-                "AI Automation Engineer · Building autonomous pipelines that save time & money",
-                "n8n Expert · ComfyUI Specialist · LLM Integrator",
-                "Autonomous AI pipelines · High-quality content generation"
+        (function () {
+            'use strict';
+
+            var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* ---------- 1. Typewriter ---------- */
+            var phrases = [
+                'AI Automation Engineer',
+                'n8n \u00b7 ComfyUI \u00b7 local LLMs \u00b7 Python \u00b7 Docker',
+                'Autonomous pipelines that save time & money'
             ];
-            let textIndex = 0;
-            let charIndex = 0;
-            const typingElement = document.getElementById('typing-text');
-            
-            function typeText() {
-                if (charIndex < textArray[textIndex].length) {
-                    typingElement.innerHTML = textArray[textIndex].substring(0, charIndex + 1) + '<span class="cursor-blink"></span>';
-                    charIndex++;
-                    setTimeout(typeText, 30 + Math.random() * 20); // Скорость печати
-                } else {
-                    setTimeout(eraseText, 3000); // Пауза перед стиранием
+            var typingEl = document.getElementById('typing');
+            var cursorEl = document.querySelector('.cursor');
+
+            if (reducedMotion) {
+                typingEl.textContent = phrases[0];
+                if (cursorEl) cursorEl.style.display = 'none';
+            } else {
+                var phraseIndex = 0, charIndex = 0, deleting = false;
+
+                function tick() {
+                    var current = phrases[phraseIndex];
+                    typingEl.textContent = current.substring(0, charIndex);
+
+                    var delay;
+                    if (!deleting) {
+                        if (charIndex < current.length) {
+                            charIndex++;
+                            delay = 34 + Math.random() * 26;
+                        } else {
+                            deleting = true;
+                            delay = 2600; // пауза на прочтение
+                        }
+                    } else {
+                        if (charIndex > 0) {
+                            charIndex--;
+                            delay = 16;
+                        } else {
+                            deleting = false;
+                            phraseIndex = (phraseIndex + 1) % phrases.length;
+                            delay = 450;
+                        }
+                    }
+                    setTimeout(tick, delay);
                 }
+                tick();
             }
 
-            function eraseText() {
-                if (charIndex > 0) {
-                    typingElement.innerHTML = textArray[textIndex].substring(0, charIndex - 1) + '<span class="cursor-blink"></span>';
-                    charIndex--;
-                    setTimeout(eraseText, 15);
-                } else {
-                    textIndex = (textIndex + 1) % textArray.length;
-                    setTimeout(typeText, 500);
+            /* ---------- 2. Spotlight: обновление через rAF, а не на каждый mousemove ---------- */
+            if (!reducedMotion) {
+                var spotlight = document.getElementById('spotlight');
+                var mx = -600, my = -600, rafPending = false;
+
+                function updateSpotlight() {
+                    spotlight.style.setProperty('--mx', mx + 'px');
+                    spotlight.style.setProperty('--my', my + 'px');
+                    rafPending = false;
                 }
+
+                window.addEventListener('pointermove', function (e) {
+                    mx = e.clientX;
+                    my = e.clientY;
+                    if (!rafPending) {
+                        rafPending = true;
+                        requestAnimationFrame(updateSpotlight);
+                    }
+                }, { passive: true });
             }
-            typeText();
 
-            // 2. Спотлайт за мышью
-            const spotlight = document.getElementById('spotlight');
-            document.addEventListener('mousemove', (e) => {
-                const x = e.clientX;
-                const y = e.clientY;
-                spotlight.style.setProperty('--mouse-x', x + 'px');
-                spotlight.style.setProperty('--mouse-y', y + 'px');
-            });
-
-            // 3. 3D Наклон карточек (Tilt effect)
-            const cards = document.querySelectorAll('.project[data-tilt]');
-            cards.forEach(card => {
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    const rotateX = ((y - centerY) / centerY) * -8; // Угол наклона по X (вверх-вниз)
-                    const rotateY = ((x - centerX) / centerX) * 8;  // Угол наклона по Y (влево-вправо)
-
-                    card.style.setProperty('--tilt-x', rotateX + 'deg');
-                    card.style.setProperty('--tilt-y', rotateY + 'deg');
-                    card.style.setProperty('--tilt-x-pos', (x / rect.width) * 100 + '%');
-                    card.style.setProperty('--tilt-y-pos', (y / rect.height) * 100 + '%');
-                });
-
-                card.addEventListener('mouseleave', () => {
-                    card.style.setProperty('--tilt-x', '0deg');
-                    card.style.setProperty('--tilt-y', '0deg');
-                    setTimeout(() => {
-                        card.style.transition = 'all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1.2)';
-                    }, 100);
-                });
-                
-                card.addEventListener('mouseenter', () => {
-                    card.style.transition = 'all 0.1s ease-out';
-                });
-            });
-        });
+            /* ---------- 3. Плавное появление секций при скролле ---------- */
+            var revealEls = document.querySelectorAll('.reveal');
+            if (reducedMotion || !('IntersectionObserver' in window)) {
+                revealEls.forEach(function (el) { el.classList.add('in'); });
+            } else {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('in');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.08 });
+                revealEls.forEach(function (el) { observer.observe(el); });
+            }
+        })();
     </script>
 </body>
 </html>
