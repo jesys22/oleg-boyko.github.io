@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Олег Бойко — LLM / AI Automation Engineer</title>
-    <meta name="description" content="LLM-инженер. Строю RAG-ассистенты, мультиагентные системы и автономные AI-пайплайны: FastAPI, PostgreSQL/pgvector, n8n, ComfyUI, локальные LLM, Docker.">
-    <meta name="theme-color" content="#08080d">
+    <title>Олег Бойко — LLM / AI-инженер</title>
+    <meta name="description" content="LLM-инженер. RAG-ассистенты, мультиагентные системы и автономные AI-пайплайны: FastAPI, PostgreSQL/pgvector, n8n, Docker.">
+    <meta name="theme-color" content="#f6f5f2">
 
-    <meta property="og:title" content="Олег Бойко — LLM / AI Automation Engineer">
+    <meta property="og:title" content="Олег Бойко — LLM / AI-инженер">
     <meta property="og:description" content="RAG-ассистенты, мультиагентные системы и автономные пайплайны, которые экономят время и деньги.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://jesys22.github.io/oleg-boyko.github.io/">
@@ -27,780 +27,588 @@
     }
     </script>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%236366f1'/><text x='32' y='43' font-family='Arial,sans-serif' font-size='26' font-weight='700' fill='white' text-anchor='middle'>ОБ</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%235b67c7'/><text x='32' y='42' font-family='Arial,sans-serif' font-size='24' font-weight='700' fill='white' text-anchor='middle'>ОБ</text></svg>">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         :root {
-            --bg: #08080d;
-            --panel: rgba(255, 255, 255, 0.03);
-            --panel-hover: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.09);
-            --border-accent: rgba(99, 102, 241, 0.45);
-            --text: #eceaf2;
-            --body: #c3c2d2;
-            --muted: #9795ab;
-            --accent: #6366f1;
-            --accent-bright: #a5b4fc;
-            --accent-soft: rgba(99, 102, 241, 0.12);
-            --green: #34d399;
-            --green-soft: rgba(52, 211, 153, 0.1);
-            --radius: 20px;
-            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --bg: #f6f5f2;
+            --surface: #ffffff;
+            --ink: #23272e;
+            --body: #4c525b;
+            --muted: #8b9097;
+            --line: #e8e6e1;
+            --accent: #5b67c7;
+            --accent-soft: #eef0fb;
+            --green: #3d9b6b;
+            --radius: 14px;
+            --shadow: 0 1px 2px rgba(35, 39, 46, 0.04), 0 6px 24px rgba(35, 39, 46, 0.05);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            font-family: 'Onest', system-ui, -apple-system, sans-serif;
             background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
+            color: var(--ink);
+            line-height: 1.65;
+            font-size: 15.5px;
         }
 
         ::selection { background: var(--accent); color: #fff; }
-        :focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; border-radius: 4px; }
+        :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
-        #spotlight {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            background: radial-gradient(560px circle at var(--mx, -600px) var(--my, -600px), rgba(99, 102, 241, 0.07), transparent 70%);
+        a { color: var(--ink); }
+
+        .layout {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 28px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 64px;
         }
 
-        .container { max-width: 920px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
-
-        .topbar {
+        /* ---------- sidebar ---------- */
+        .sidebar {
+            padding: 72px 0 48px;
             position: sticky;
             top: 0;
-            z-index: 10;
-            backdrop-filter: blur(14px);
-            -webkit-backdrop-filter: blur(14px);
-            background: rgba(8, 8, 13, 0.7);
-            border-bottom: 1px solid var(--border);
-        }
-        .topbar-inner {
-            max-width: 920px;
-            margin: 0 auto;
-            padding: 14px 24px;
+            height: 100vh;
             display: flex;
-            align-items: center;
-            justify-content: space-between;
+            flex-direction: column;
         }
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--text);
-            text-decoration: none;
-        }
-        .brand-mark {
-            width: 28px; height: 28px;
-            border-radius: 8px;
+        .avatar {
+            width: 64px; height: 64px;
+            border-radius: 20px;
             background: var(--accent);
             display: grid;
             place-items: center;
-            font-size: 0.72rem;
-            font-weight: 800;
             color: #fff;
+            font-weight: 700;
+            font-size: 1.35rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 22px;
         }
-        .nav { display: flex; align-items: center; gap: 26px; }
-        .nav a {
-            color: var(--muted);
-            text-decoration: none;
-            font-size: 0.9rem;
+        .sidebar h1 { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; }
+        .sidebar .role {
+            margin-top: 8px;
+            font-size: 0.92rem;
             font-weight: 500;
-            transition: color 0.2s;
+            color: var(--accent);
         }
-        .nav a:hover { color: var(--text); }
-        .nav .nav-cv {
-            color: var(--accent-bright);
-            border: 1px solid var(--border-accent);
-            padding: 7px 16px;
-            border-radius: 10px;
-            transition: background 0.2s, color 0.2s;
-        }
-        .nav .nav-cv:hover { background: var(--accent-soft); color: #fff; text-decoration: none; }
-
-        .hero { padding: 96px 0 56px; text-align: center; }
-        .hero-bar {
-            width: 56px; height: 3px;
-            background: var(--accent);
-            border-radius: 2px;
-            margin: 0 auto 28px;
-        }
-        .hero h1 {
-            font-size: clamp(2.8rem, 8vw, 4.4rem);
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            line-height: 1.05;
-        }
-        .hero h1 .accent { color: var(--accent-bright); }
-
-        .role {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.95rem;
+        .sidebar .tagline {
+            margin-top: 14px;
+            font-size: 0.9rem;
             color: var(--muted);
-            margin-top: 18px;
-            min-height: 1.6em;
+            line-height: 1.55;
         }
-        .cursor {
-            display: inline-block;
-            width: 8px; height: 1.05em;
-            background: var(--accent-bright);
-            margin-left: 3px;
-            vertical-align: text-bottom;
-            animation: blink 0.9s step-end infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-
-        .badge {
+        .status {
+            margin-top: 16px;
             display: inline-flex;
             align-items: center;
-            gap: 9px;
-            margin-top: 26px;
-            padding: 8px 20px;
-            border-radius: 99px;
-            background: var(--green-soft);
-            border: 1px solid rgba(52, 211, 153, 0.25);
-            color: var(--green);
-            font-size: 0.88rem;
+            gap: 8px;
+            font-size: 0.82rem;
             font-weight: 500;
+            color: var(--green);
+            background: #eaf5ef;
+            border: 1px solid #d4eadf;
+            padding: 5px 12px;
+            border-radius: 99px;
+            width: fit-content;
         }
-        .badge::before {
-            content: '';
-            width: 7px; height: 7px;
+        .status i {
+            width: 6px; height: 6px;
             border-radius: 50%;
             background: var(--green);
-            animation: pulse 2.2s ease-in-out infinite;
         }
-        @keyframes pulse { 50% { opacity: 0.35; } }
-
-        .about {
-            margin: 0 auto 32px;
-            max-width: 720px;
-            padding: 34px;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            text-align: center;
+        .side-nav { margin-top: 40px; display: flex; flex-direction: column; gap: 4px; }
+        .side-nav a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            margin-left: -12px;
+            border-radius: 9px;
+            text-decoration: none;
+            color: var(--body);
+            font-size: 0.93rem;
+            font-weight: 500;
+            transition: background 0.15s, color 0.15s;
         }
-        .about p { color: var(--body); font-size: 1.06rem; line-height: 1.75; }
-        .about strong { color: var(--accent-bright); font-weight: 600; }
+        .side-nav a::before {
+            content: '';
+            width: 16px; height: 1.5px;
+            background: var(--muted);
+            border-radius: 1px;
+            transition: width 0.15s, background 0.15s;
+        }
+        .side-nav a:hover { color: var(--ink); background: rgba(255, 255, 255, 0.7); }
+        .side-nav a:hover::before { background: var(--accent); width: 22px; }
+        .side-socials { margin-top: auto; display: flex; gap: 10px; }
+        .side-socials a {
+            width: 36px; height: 36px;
+            display: grid;
+            place-items: center;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            color: var(--muted);
+            transition: color 0.15s, border-color 0.15s;
+        }
+        .side-socials a:hover { color: var(--accent); border-color: var(--accent); }
+        .side-socials svg { width: 16px; height: 16px; }
 
-        .btn-row { display: flex; gap: 14px; justify-content: center; margin-top: 26px; flex-wrap: wrap; }
+        /* ---------- main ---------- */
+        .main { padding: 72px 0 48px; min-width: 0; }
+
+        .intro p { color: var(--body); font-size: 1rem; max-width: 560px; }
+        .intro p + p { margin-top: 14px; }
+        .intro .lead { font-size: 1.12rem; color: var(--ink); font-weight: 500; }
+        .btn-row { display: flex; gap: 10px; margin-top: 26px; flex-wrap: wrap; }
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 9px;
-            padding: 13px 26px;
-            border-radius: 12px;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             text-decoration: none;
-            transition: transform 0.25s var(--ease), background 0.25s, border-color 0.25s, color 0.25s;
+            transition: background 0.15s, border-color 0.15s, transform 0.15s;
         }
-        .btn svg { width: 16px; height: 16px; }
-        .btn-primary { background: var(--accent); color: #fff; }
-        .btn-primary:hover { background: #4f52e0; transform: translateY(-2px); }
-        .btn-ghost { border: 1px solid var(--border); color: var(--text); }
-        .btn-ghost:hover { border-color: var(--border-accent); background: var(--panel-hover); transform: translateY(-2px); }
+        .btn svg { width: 15px; height: 15px; }
+        .btn-primary { background: var(--ink); color: #fff; }
+        .btn-primary:hover { background: #3a3f47; }
+        .btn-ghost { background: var(--surface); border: 1px solid var(--line); color: var(--ink); }
+        .btn-ghost:hover { border-color: var(--muted); }
 
-        .section-head { margin: 80px 0 36px; }
-        .kicker {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--accent-bright);
+        .section-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin: 64px 0 20px;
         }
-        .section-head h2 {
-            font-size: 1.9rem;
-            font-weight: 700;
-            letter-spacing: -0.02em;
-            margin-top: 8px;
-        }
+        .section-head h2 { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
+        .section-head .count { font-size: 0.85rem; color: var(--muted); font-weight: 500; }
 
+        /* ---------- project cards ---------- */
         .project {
-            background: var(--panel);
-            border: 1px solid var(--border);
+            background: var(--surface);
+            border: 1px solid var(--line);
             border-radius: var(--radius);
-            padding: 36px;
-            margin-bottom: 28px;
-            transition: transform 0.3s var(--ease), border-color 0.3s, background 0.3s;
+            box-shadow: var(--shadow);
+            padding: 26px 28px;
+            margin-bottom: 18px;
+            transition: border-color 0.2s, transform 0.2s;
         }
-        .project:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-accent);
-            background: var(--panel-hover);
-        }
-
-        .project-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
-        .project h3 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.01em; line-height: 1.3; }
+        .project:hover { border-color: #d6d3cc; }
+        .project-top { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
         .project-num {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.85rem;
+            font-size: 0.78rem;
+            font-weight: 600;
             color: var(--muted);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            padding: 2px 8px;
+            border-radius: 6px;
             flex-shrink: 0;
         }
-
-        .featured {
-            display: inline-block;
-            font-family: 'JetBrains Mono', monospace;
+        .project h3 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+        .project h3 .featured {
             font-size: 0.66rem;
-            letter-spacing: 0.1em;
+            font-weight: 600;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
-            color: var(--accent-bright);
+            color: var(--accent);
             background: var(--accent-soft);
-            border: 1px solid var(--border-accent);
-            padding: 3px 10px;
-            border-radius: 7px;
-            margin-left: 10px;
-            vertical-align: middle;
+            padding: 3px 8px;
+            border-radius: 6px;
+            margin-left: 8px;
+            vertical-align: 2px;
             white-space: nowrap;
         }
-
-        .project .label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.72rem;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            color: var(--accent-bright);
-            display: block;
-            margin: 18px 0 6px;
-        }
-        .project p { color: var(--body); font-size: 0.99rem; }
-
+        .project p { color: var(--body); font-size: 0.93rem; margin-top: 8px; }
+        .project .task { color: var(--muted); }
         .metric {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 7px 14px;
-            border-radius: 9px;
-            background: var(--green-soft);
-            border: 1px solid rgba(52, 211, 153, 0.2);
+            margin-top: 14px;
+            font-size: 0.88rem;
+            font-weight: 500;
             color: var(--green);
-            font-size: 0.9rem;
-            font-weight: 600;
+            background: #eef7f2;
+            border: 1px solid #dceee4;
+            padding: 8px 14px;
+            border-radius: 9px;
         }
-
-        .tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-            margin-top: 22px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border);
-            list-style: none;
-        }
-        .tech li {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.78rem;
-            color: var(--muted);
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 4px 10px;
-            border-radius: 7px;
-        }
+        .tech { margin-top: 12px; font-size: 0.83rem; color: var(--muted); }
+        .tech strong { color: var(--body); font-weight: 600; }
 
         video {
             width: 100%;
             display: block;
-            margin-top: 24px;
-            border-radius: 14px;
-            border: 1px solid var(--border);
+            margin-top: 18px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
             background: #000;
         }
 
-        .links-row { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 18px; }
+        .diagram {
+            margin-top: 18px;
+            padding: 16px 14px 10px;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow-x: auto;
+            background: var(--bg);
+        }
+        .diagram svg { display: block; min-width: 620px; width: 100%; height: auto; }
+        .diagram-caption { font-size: 0.76rem; color: var(--muted); margin-top: 8px; text-align: center; }
+
+        .links-row { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
         .links-row a {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            color: var(--accent-bright);
-            font-size: 0.92rem;
-            font-weight: 500;
+            gap: 6px;
+            color: var(--accent);
+            font-size: 0.88rem;
+            font-weight: 600;
             text-decoration: none;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s, color 0.2s;
         }
-        .links-row a:hover { border-bottom-color: var(--accent-bright); }
-        .links-row svg { width: 15px; height: 15px; }
-
-        .diagram {
-            margin-top: 24px;
-            padding: 22px;
-            border: 1px dashed var(--border);
-            border-radius: 14px;
-            overflow-x: auto;
-        }
-        .diagram svg { display: block; min-width: 620px; width: 100%; height: auto; }
-        .diagram-caption {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--muted);
-            margin-top: 12px;
-            text-align: center;
-        }
+        .links-row a:hover { text-decoration: underline; text-underline-offset: 3px; }
+        .links-row svg { width: 14px; height: 14px; }
 
         .learning {
-            text-align: center;
-            padding: 30px;
-        }
-        .learning h3 { font-size: 1.1rem; font-weight: 700; }
-        .learning p { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
-
-        .contact {
-            margin: 88px 0 64px;
-            padding: 56px 36px;
-            text-align: center;
-            background: var(--panel);
-            border: 1px solid var(--border);
+            margin-top: 6px;
+            padding: 18px 20px;
+            background: var(--accent-soft);
+            border: 1px solid #dfe3f5;
             border-radius: var(--radius);
+            font-size: 0.9rem;
+            color: var(--body);
         }
-        .contact h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 800; letter-spacing: -0.02em; }
-        .contact p { color: var(--muted); margin: 14px auto 0; max-width: 460px; }
+        .learning strong { color: var(--ink); font-weight: 600; }
+
+        /* ---------- contacts ---------- */
+        .contact-card {
+            background: var(--ink);
+            color: #fff;
+            border-radius: var(--radius);
+            padding: 32px;
+        }
+        .contact-card h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.01em; }
+        .contact-card > p { color: #b9bec7; margin-top: 8px; font-size: 0.94rem; max-width: 420px; }
+        .contact-list { list-style: none; margin-top: 22px; }
+        .contact-list li { display: flex; align-items: baseline; gap: 14px; padding: 11px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.09); }
+        .contact-list li:last-child { border-bottom: none; }
+        .contact-list .cl-label {
+            width: 80px;
+            flex-shrink: 0;
+            font-size: 0.76rem;
+            font-weight: 600;
+            letter-spacing: 0.07em;
+            text-transform: uppercase;
+            color: #8a90a0;
+        }
+        .contact-list a {
+            color: #fff;
+            font-weight: 500;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+            transition: border-color 0.15s;
+        }
+        .contact-list a:hover { border-bottom-color: #fff; }
 
         .footer {
-            border-top: 1px solid var(--border);
-            padding: 34px 24px 44px;
-        }
-        .footer-inner {
-            max-width: 920px;
-            margin: 0 auto;
+            max-width: 1080px;
+            margin: 56px auto 0;
+            padding: 24px 28px 40px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            gap: 20px;
+            gap: 14px;
             flex-wrap: wrap;
             color: var(--muted);
-            font-size: 0.88rem;
-        }
-        .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
-        .footer-links a {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            color: var(--muted);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .footer-links a:hover { color: var(--text); }
-        .footer-links svg { width: 16px; height: 16px; }
-
-        .reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
-        .reveal.in { opacity: 1; transform: none; }
-
-        @media (max-width: 640px) {
-            .hero { padding: 64px 0 40px; }
-            .project { padding: 26px 20px; }
-            .nav { gap: 16px; }
-            .nav a:not(.nav-cv) { display: none; }
-            .about { padding: 26px 20px; }
-            .featured { display: block; margin: 8px 0 0; }
+            font-size: 0.83rem;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            html { scroll-behavior: auto; }
-            .cursor, .badge::before { animation: none; }
-            .project, .btn, .reveal { transition: none; }
-            .reveal { opacity: 1; transform: none; }
-            #spotlight { display: none; }
+        @media (max-width: 880px) {
+            .layout { grid-template-columns: 1fr; gap: 0; }
+            .sidebar {
+                position: static;
+                height: auto;
+                padding: 48px 0 0;
+            }
+            .side-nav { display: none; }
+            .side-socials { margin-top: 24px; }
+            .main { padding: 36px 0 0; }
+            .project { padding: 22px 18px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 
-    <div id="spotlight"></div>
+    <div class="layout" id="top">
 
-    <header class="topbar">
-        <div class="topbar-inner">
-            <a class="brand" href="#top"><span class="brand-mark">ОБ</span>Олег Бойко</a>
-            <nav class="nav" aria-label="Главная навигация">
+        <aside class="sidebar">
+            <div class="avatar">ОБ</div>
+            <h1>Олег Бойко</h1>
+            <p class="role">LLM / AI-инженер</p>
+            <p class="tagline">Автономные AI-системы: RAG, агенты, обработка документов, генеративный контент.</p>
+            <span class="status"><i></i>Открыт к удалённой работе</span>
+
+            <nav class="side-nav" aria-label="Навигация">
                 <a href="#about">Обо мне</a>
                 <a href="#projects">Проекты</a>
                 <a href="#contact">Контакты</a>
-                <a class="nav-cv" href="Oleg_Boyko_CV.pdf" download>CV</a>
+                <a href="Oleg_Boyko_CV.pdf" download>CV</a>
             </nav>
-        </div>
-    </header>
 
-    <main class="container" id="top">
-
-        <section class="hero">
-            <div class="hero-bar"></div>
-            <h1>Олег <span class="accent">Бойко</span></h1>
-            <p class="role"><span id="typing"></span><span class="cursor"></span></p>
-            <span class="badge">Открыт к удалённой работе</span>
-        </section>
-
-        <section class="about reveal" id="about">
-            <p>
-                Строю production-системы на LLM и автономные пайплайны: RAG-ассистенты,
-                мультиагентные сценарии, обработку документов и генеративный контент —
-                всё, что экономит бизнесу время и деньги. Основной стек:
-                <strong>Python</strong>, <strong>FastAPI</strong>,
-                <strong>PostgreSQL/pgvector</strong>, <strong>n8n</strong>, <strong>Docker</strong>.
-            </p>
-            <div class="btn-row">
-                <a class="btn btn-primary" href="Oleg_Boyko_CV.pdf" download>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Скачать CV
-                </a>
-                <a class="btn btn-ghost" href="#projects">Смотреть проекты</a>
-            </div>
-        </section>
-
-        <div class="section-head" id="projects">
-            <span class="kicker">01 — Работы</span>
-            <h2>Избранные проекты</h2>                                                                                                                                                
-        </div>
-
-        <article class="project reveal">
-            <div class="project-top">
-                <h3>Sales AI Assistant — RAG для отдела продаж<span class="featured">Featured</span></h3>
-                <span class="project-num">/01</span>
-            </div>
-
-            <span class="label">Задача</span>
-            <p>Отдел продаж тратит часы на поиск информации по разрозненным документам и CRM, чтобы ответить клиенту — ответы медленные и противоречивые.</p>
-
-            <span class="label">Решение</span>
-            <p>Полностью локальный RAG-ассистент: FastAPI + async SQLAlchemy 2.0 + PostgreSQL с pgvector. Документы чанкуются и эмбеддятся (e5-large, 1024 dim); запрос проходит через векторный поиск, реранкинг и локальную Qwen 2.5 Coder 14B (LM Studio) с трассировкой источников.CI на GitHub Actions (Ruff + Mypy + Pytest),</p>
-
-            <span class="metric">86% покрытие тестами &middot; 22 unit-теста &middot; 100% локально, без внешних API</span>
-
-            <ul class="tech">
-                <li>Python</li><li>FastAPI</li><li>PostgreSQL</li><li>pgvector</li><li>Qwen 2.5 Coder</li><li>n8n</li><li>Docker</li><li>GitHub Actions</li><li>Prometheus</li><li>pytest</li>
-            </ul>
-
-            <div class="diagram">
-                <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, monospace" font-size="12" role="img" aria-label="Схема RAG-пайплайна">
-                    <defs>
-                        <marker id="arrow-rag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                            <path d="M0,0 L6,3 L0,6" fill="none" stroke="#6366f1" stroke-width="1.2"/>
-                        </marker>
-                    </defs>
-                    <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)" stroke-width="1">
-                        <rect x="10"   y="45" width="100" height="40" rx="9"/>
-                        <rect x="145"  y="45" width="110" height="40" rx="9"/>
-                        <rect x="290"  y="45" width="120" height="40" rx="9"/>
-                        <rect x="445"  y="45" width="90"  height="40" rx="9"/>
-                        <rect x="570"  y="45" width="140" height="40" rx="9"/>
-                    </g>
-                    <g stroke="#6366f1" stroke-width="1.2">
-                        <line x1="110" y1="65" x2="140" y2="65" marker-end="url(#arrow-rag)"/>
-                        <line x1="255" y1="65" x2="285" y2="65" marker-end="url(#arrow-rag)"/>
-                        <line x1="410" y1="65" x2="440" y2="65" marker-end="url(#arrow-rag)"/>
-                        <line x1="535" y1="65" x2="565" y2="65" marker-end="url(#arrow-rag)"/>
-                    </g>
-                    <g fill="#c3c2d2" text-anchor="middle">
-                        <text x="60"  y="69">Запрос</text>
-                        <text x="200" y="69">Embedding</text>
-                        <text x="350" y="69">pgvector</text>
-                        <text x="490" y="69">Rerank</text>
-                        <text x="640" y="69">Ответ LLM</text>
-                    </g>
-                </svg>
-                <p class="diagram-caption">RAG-пайплайн — чанкинг → embeddings → векторный поиск → реранкинг → ответ с источниками</p>
-            </div>
-
-            <div class="links-row">
-                <a href="https://github.com/jesys22/sales-ai-assistant" target="_blank" rel="noopener">
+            <div class="side-socials">
+                <a href="https://github.com/jesys22" target="_blank" rel="noopener" aria-label="GitHub">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
-                    Репозиторий на GitHub
                 </a>
-            </div>
-        </article>
-
-        <article class="project reveal">
-            <div class="project-top">
-                <h3>Автоматический генератор карточек товаров</h3>
-                <span class="project-num">/02</span>
-            </div>
-
-            <span class="label">Задача</span>
-            <p>Создание одной карточки товара занимало около часа и требовало дизайнера для каждого нового продукта.</p>
-
-            <span class="label">Решение</span>
-            <p>Автономный n8n-пайплайн: читает данные товара, локальная LLM пишет детальный промпт для генерации изображения из названия товара, ComfyUI (JuggernautXL) рендерит карточку, результат сохраняется в Google Drive. Система творчески адаптируется к вводу — например, сгенерировала концепт «New Balance» из исходного файла Nike.</p>
-
-            <span class="metric">~1 час ручной работы → ~2 минуты на карточку</span>
-
-            <ul class="tech">
-                <li>n8n</li><li>ComfyUI</li><li>JuggernautXL</li><li>LM Studio</li><li>Google Drive API</li>
-            </ul>
-
-            <video controls preload="metadata" playsinline aria-label="Демо: автоматический генератор карточек товаров">
-                <source src="videos/compressed_022020.mp4" type="video/mp4">
-                Ваш браузер не поддерживает видео.
-            </video>
-
-            <div class="links-row">
-                <a href="workflows/Automated%20E-Commerce%20Product%20Card%20Generator.json">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                    Workflow JSON
-                </a>
-            </div>
-        </article>
-
-        <article class="project reveal">
-            <div class="project-top">
-                <h3>Автономный AI-агент для соцсетей</h3>
-                <span class="project-num">/03</span>
-            </div>
-
-            <span class="label">Задача</span>
-            <p>Маркетинговые команды тратят часы на идеи и дизайн для каждой кампании.</p>
-
-            <span class="label">Решение</span>
-            <p>n8n-агент, который превращает одну тему в готовую визуальную серию для публикации. Локальная LLM (Phi-4 14B) пишет подписи, а фиксированный набор брендовых шаблонов в ComfyUI держит единый стиль. SplitInBatches генерирует всю серию за один запуск — например, полную кампанию «свежевыжатый апельсиновый сок» из одного ввода.</p>
-
-            <span class="metric">Одна тема → полная визуальная серия за один запуск</span>
-
-            <ul class="tech">
-                <li>n8n</li><li>ComfyUI</li><li>Phi-4 14B</li><li>SplitInBatches</li>
-            </ul>
-
-            <video controls preload="metadata" playsinline aria-label="Демо: автономный AI-агент для соцсетей">
-                <source src="videos/Demo2.mp4" type="video/mp4">
-                Ваш браузер не поддерживает видео.
-            </video>
-
-            <div class="links-row">
-                <a href="workflows/Autonomous%20AI%20Social%20Media%20Agent.json">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                    Workflow JSON
-                </a>
-            </div>
-        </article>
-
-        <article class="project reveal">
-            <div class="project-top">
-                <h3>Анализатор отзывов в реальном времени</h3>
-                <span class="project-num">/04</span>
-            </div>
-
-            <span class="label">Задача</span>
-            <p>Ручной анализ тысяч отзывов медленный, непоследовательный и задерживает бизнес-решения.</p>
-
-            <span class="label">Решение</span>
-            <p>Автоматизированный пайплайн, в котором локальная LLM (Phi-4 14B) классифицирует тональность, категорию и ключевые темы каждого отзыва, а затем записывает результаты в Google Sheets для мониторинга в реальном времени — проблемы видны в момент появления.</p>
-
-            <span class="metric">~95% меньше времени на обработку &middot; мгновенное обнаружение проблем</span>
-
-            <ul class="tech">
-                <li>n8n</li><li>Phi-4 14B</li><li>Google Sheets API</li><li>REST API</li><li>PowerShell</li>
-            </ul>
-
-            <video controls preload="metadata" playsinline aria-label="Демо: анализатор отзывов в реальном времени">
-                <source src="videos/DEMO.mp4" type="video/mp4">
-                Ваш браузер не поддерживает видео.
-            </video>
-
-            <div class="links-row">
-                <a href="workflows/Real-Time%20Customer%20Feedback%20Analyzer.json">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                    Workflow JSON
-                </a>
-            </div>
-        </article>
-
-        <article class="project reveal">
-            <div class="project-top">
-                <h3>Автономный документо-пайплайн (ADPP)</h3>
-                <span class="project-num">/05</span>
-            </div>
-
-            <span class="label">Задача</span>
-            <p>Ручное извлечение данных из инвойсов и PDF занимает часы и подвержено ошибкам.</p>
-
-            <span class="label">Решение</span>
-            <p>Full-stack пайплайн, работающий полностью локально: FastAPI принимает документы, Tesseract OCR извлекает текст, локальная LLM (через LM Studio) парсит структурированные поля (номер инвойса, дата, поставщик, сумма), результаты сохраняются в SQLite и отображаются в дашборде Streamlit. Без облака, без лимитов на документ.</p>
-
-            <span class="metric">15 минут → менее 30 секунд на инвойс</span>
-
-            <ul class="tech">
-                <li>Python</li><li>FastAPI</li><li>Tesseract OCR</li><li>LM Studio</li><li>SQLite</li><li>Streamlit</li><li>Docker</li>
-            </ul>
-
-            <div class="diagram">
-                <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="JetBrains Mono, monospace" font-size="12" role="img" aria-label="Схема документо-пайплайна">
-                    <defs>
-                        <marker id="arrow-adpp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                            <path d="M0,0 L6,3 L0,6" fill="none" stroke="#6366f1" stroke-width="1.2"/>
-                        </marker>
-                    </defs>
-                    <g fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.14)" stroke-width="1">
-                        <rect x="10"   y="45" width="110" height="40" rx="9"/>
-                        <rect x="155"  y="45" width="100" height="40" rx="9"/>
-                        <rect x="290"  y="45" width="110" height="40" rx="9"/>
-                        <rect x="435"  y="45" width="105" height="40" rx="9"/>
-                        <rect x="575"  y="45" width="135" height="40" rx="9"/>
-                    </g>
-                    <g stroke="#6366f1" stroke-width="1.2">
-                        <line x1="120" y1="65" x2="150" y2="65" marker-end="url(#arrow-adpp)"/>
-                        <line x1="255" y1="65" x2="285" y2="65" marker-end="url(#arrow-adpp)"/>
-                        <line x1="400" y1="65" x2="430" y2="65" marker-end="url(#arrow-adpp)"/>
-                        <line x1="540" y1="65" x2="570" y2="65" marker-end="url(#arrow-adpp)"/>
-                    </g>
-                    <g fill="#c3c2d2" text-anchor="middle">
-                        <text x="65"  y="69">PDF-инвойс</text>
-                        <text x="205" y="69">FastAPI</text>
-                        <text x="345" y="69">Tesseract</text>
-                        <text x="487" y="69">LLM-парсинг</text>
-                        <text x="642" y="69">SQLite + UI</text>
-                    </g>
-                </svg>
-                <p class="diagram-caption">архитектура пайплайна — только локально, без облака</p>
-            </div>
-
-            <div class="links-row">
-                <a href="https://github.com/jesys22/ai_document_pipeline" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
-                    Репозиторий на GitHub
-                </a>
-            </div>
-        </article>
-
-        <div class="project learning reveal">
-            <h3>Сейчас изучаю</h3>
-            <p>Оценку качества RAG (recall@k, MRR) &middot; продвинутый Python для AI &middot; облачный деплой (RunPod, Docker Compose)</p>
-        </div>
-
-        <section class="contact reveal" id="contact">
-            <span class="kicker">02 — Контакты</span>
-            <h2>Есть процесс для автоматизации?</h2>
-            <p>Открыт к удалённой работе. Напишите — обычно отвечаю в течение дня.</p>
-            <div class="btn-row">
-                <a class="btn btn-primary" href="mailto:oleg.boyko.02@list.ru">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-                    Написать мне
-                </a>
-                <a class="btn btn-ghost" href="https://t.me/Requay" target="_blank" rel="noopener">
+                <a href="https://t.me/Requay" target="_blank" rel="noopener" aria-label="Telegram">
                     <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    Telegram
                 </a>
-                <a class="btn btn-ghost" href="Oleg_Boyko_CV.pdf" download>Скачать CV</a>
+                <a href="mailto:oleg.boyko.02@list.ru" aria-label="Email">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank" rel="noopener" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.78C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.78 24h20.44c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z"/></svg>
+                </a>
             </div>
-        </section>
-    </main>
+        </aside>
+
+        <main class="main">
+
+            <section class="intro" id="about">
+                <p class="lead">Проектирую и запускаю в эксплуатацию автономные AI-системы на локальных и облачных LLM — с измеримым результатом для бизнеса.</p>
+                <p>RAG-пайплайны (pgvector, embeddings, реранкинг), мультиагентные сценарии, structured output, tool calling. Стек — Python, FastAPI, async SQLAlchemy 2.0, PostgreSQL, Docker, n8n, ComfyUI. Каждый проект ниже сокращает ручной труд в разы: 60 минут → 2 минуты, 15 минут → 30 секунд.</p>
+                <div class="btn-row">
+                    <a class="btn btn-primary" href="Oleg_Boyko_CV.pdf" download>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        Скачать CV
+                    </a>
+                    <a class="btn btn-ghost" href="#projects">Смотреть проекты</a>
+                </div>
+            </section>
+
+            <div class="section-head" id="projects">
+                <h2>Избранные проекты</h2>
+                <span class="count">5 проектов</span>
+            </div>
+
+            <article class="project">
+                <div class="project-top">
+                    <span class="project-num">01</span>
+                    <h3>Sales AI Assistant — RAG для отдела продаж<span class="featured">Избранное</span></h3>
+                </div>
+
+                <p class="task">Отдел продаж тратит часы на поиск информации по разрозненным документам и CRM, чтобы ответить клиенту — ответы медленные и противоречивые.</p>
+                <p>Полностью локальный RAG-ассистент: FastAPI + async SQLAlchemy 2.0 + PostgreSQL с pgvector. Документы чанкуются и эмбеддятся (e5-large, 1024 dim); запрос проходит через векторный поиск, реранкинг и локальную Qwen 2.5 Coder 14B (LM Studio) с трассировкой источников. CI на GitHub Actions (Ruff + Mypy + Pytest), развёртывание в Docker.</p>
+
+                <p class="metric">Retrieval hit rate 0.95 · semantic similarity 0.97 (golden set из 20 вопросов) · 22 теста, покрытие 86% · 100% локально, без внешних API</p>
+
+                <p class="tech"><strong>Python · FastAPI · PostgreSQL · pgvector · Qwen 2.5 Coder · Docker · GitHub Actions · pytest</strong></p>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="Onest, system-ui, sans-serif" font-size="12" role="img" aria-label="Схема RAG-пайплайна">
+                        <defs>
+                            <marker id="arrow-rag" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#5b67c7" stroke-width="1.2"/>
+                            </marker>
+                        </defs>
+                        <g fill="#ffffff" stroke="#ddd9d2" stroke-width="1">
+                            <rect x="10"   y="45" width="100" height="40" rx="10"/>
+                            <rect x="145"  y="45" width="110" height="40" rx="10"/>
+                            <rect x="290"  y="45" width="120" height="40" rx="10"/>
+                            <rect x="445"  y="45" width="90"  height="40" rx="10"/>
+                            <rect x="570"  y="45" width="140" height="40" rx="10"/>
+                        </g>
+                        <g stroke="#5b67c7" stroke-width="1.2">
+                            <line x1="110" y1="65" x2="140" y2="65" marker-end="url(#arrow-rag)"/>
+                            <line x1="255" y1="65" x2="285" y2="65" marker-end="url(#arrow-rag)"/>
+                            <line x1="410" y1="65" x2="440" y2="65" marker-end="url(#arrow-rag)"/>
+                            <line x1="535" y1="65" x2="565" y2="65" marker-end="url(#arrow-rag)"/>
+                        </g>
+                        <g fill="#4c525b" text-anchor="middle">
+                            <text x="60"  y="69">Запрос</text>
+                            <text x="200" y="69">Embedding</text>
+                            <text x="350" y="69">pgvector</text>
+                            <text x="490" y="69">Rerank</text>
+                            <text x="640" y="69">Ответ LLM</text>
+                        </g>
+                    </svg>
+                    <p class="diagram-caption">чанкинг → embeddings → векторный поиск → реранкинг → ответ с источниками</p>
+                </div>
+
+                <div class="links-row">
+                    <a href="https://github.com/jesys22/sales-ai-assistant" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+                        Репозиторий на GitHub
+                    </a>
+                </div>
+            </article>
+
+            <article class="project">
+                <div class="project-top">
+                    <span class="project-num">02</span>
+                    <h3>Автоматический генератор карточек товаров</h3>
+                </div>
+
+                <p class="task">Создание одной карточки товара занимало около часа и требовало дизайнера для каждого нового продукта.</p>
+                <p>Автономный n8n-пайплайн: читает данные товара, локальная LLM пишет детальный промпт для генерации изображения из названия товара, ComfyUI (JuggernautXL) рендерит карточку, результат сохраняется в Google Drive. Система адаптируется к вводу — например, сгенерировала концепт «New Balance» из исходного файла Nike.</p>
+
+                <p class="metric">~1 час ручной работы → ~2 минуты на карточку</p>
+
+                <p class="tech"><strong>n8n · ComfyUI · JuggernautXL · LM Studio · Google Drive API</strong></p>
+
+                <video controls preload="metadata" playsinline aria-label="Демо: автоматический генератор карточек товаров">
+                    <source src="videos/compressed_022020.mp4" type="video/mp4">
+                    Ваш браузер не поддерживает видео.
+                </video>
+
+                <div class="links-row">
+                    <a href="workflows/Automated%20E-Commerce%20Product%20Card%20Generator.json">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        Workflow JSON
+                    </a>
+                </div>
+            </article>
+
+            <article class="project">
+                <div class="project-top">
+                    <span class="project-num">03</span>
+                    <h3>Автономный AI-агент для соцсетей</h3>
+                </div>
+
+                <p class="task">Маркетинговые команды тратят часы на идеи и дизайн для каждой кампании.</p>
+                <p>n8n-агент, который превращает одну тему в готовую визуальную серию для публикации. Локальная LLM (Phi-4 14B) пишет подписи, фиксированный набор брендовых шаблонов в ComfyUI держит единый стиль. SplitInBatches генерирует всю серию за один запуск — например, полную кампанию «свежевыжатый апельсиновый сок» из одного ввода.</p>
+
+                <p class="metric">Одна тема → полная визуальная серия за один запуск</p>
+
+                <p class="tech"><strong>n8n · ComfyUI · Phi-4 14B · SplitInBatches</strong></p>
+
+                <video controls preload="metadata" playsinline aria-label="Демо: автономный AI-агент для соцсетей">
+                    <source src="videos/Demo2.mp4" type="video/mp4">
+                    Ваш браузер не поддерживает видео.
+                </video>
+
+                <div class="links-row">
+                    <a href="workflows/Autonomous%20AI%20Social%20Media%20Agent.json">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        Workflow JSON
+                    </a>
+                </div>
+            </article>
+
+            <article class="project">
+                <div class="project-top">
+                    <span class="project-num">04</span>
+                    <h3>Анализатор отзывов в реальном времени</h3>
+                </div>
+
+                <p class="task">Ручной анализ тысяч отзывов медленный, непоследовательный и задерживает бизнес-решения.</p>
+                <p>Автоматизированный пайплайн, в котором локальная LLM (Phi-4 14B) классифицирует тональность, категорию и ключевые темы каждого отзыва, а затем записывает результаты в Google Sheets для мониторинга в реальном времени — проблемы видны в момент появления.</p>
+
+                <p class="metric">~95% меньше времени на обработку · негатив виден в день поступления</p>
+
+                <p class="tech"><strong>n8n · Phi-4 14B · Google Sheets API · REST API · PowerShell</strong></p>
+
+                <video controls preload="metadata" playsinline aria-label="Демо: анализатор отзывов в реальном времени">
+                    <source src="videos/DEMO.mp4" type="video/mp4">
+                    Ваш браузер не поддерживает видео.
+                </video>
+
+                <div class="links-row">
+                    <a href="workflows/Real-Time%20Customer%20Feedback%20Analyzer.json">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                        Workflow JSON
+                    </a>
+                </div>
+            </article>
+
+            <article class="project">
+                <div class="project-top">
+                    <span class="project-num">05</span>
+                    <h3>Автономный документо-пайплайн (ADPP)</h3>
+                </div>
+
+                <p class="task">Ручное извлечение данных из инвойсов и PDF занимает часы и подвержено ошибкам.</p>
+                <p>Full-stack пайплайн, работающий полностью локально: FastAPI принимает документы, Tesseract OCR извлекает текст, локальная LLM (через LM Studio) парсит структурированные поля (номер инвойса, дата, поставщик, сумма), результаты сохраняются в SQLite и отображаются в дашборде Streamlit. Без облака, без лимитов на документ.</p>
+
+                <p class="metric">15 минут → менее 30 секунд на инвойс</p>
+
+                <p class="tech"><strong>Python · FastAPI · Tesseract OCR · LM Studio · SQLite · Streamlit · Docker</strong></p>
+
+                <div class="diagram">
+                    <svg viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="Onest, system-ui, sans-serif" font-size="12" role="img" aria-label="Схема документо-пайплайна">
+                        <defs>
+                            <marker id="arrow-adpp" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                                <path d="M0,0 L6,3 L0,6" fill="none" stroke="#5b67c7" stroke-width="1.2"/>
+                            </marker>
+                        </defs>
+                        <g fill="#ffffff" stroke="#ddd9d2" stroke-width="1">
+                            <rect x="10"   y="45" width="110" height="40" rx="10"/>
+                            <rect x="155"  y="45" width="100" height="40" rx="10"/>
+                            <rect x="290"  y="45" width="110" height="40" rx="10"/>
+                            <rect x="435"  y="45" width="105" height="40" rx="10"/>
+                            <rect x="575"  y="45" width="135" height="40" rx="10"/>
+                        </g>
+                        <g stroke="#5b67c7" stroke-width="1.2">
+                            <line x1="120" y1="65" x2="150" y2="65" marker-end="url(#arrow-adpp)"/>
+                            <line x1="255" y1="65" x2="285" y2="65" marker-end="url(#arrow-adpp)"/>
+                            <line x1="400" y1="65" x2="430" y2="65" marker-end="url(#arrow-adpp)"/>
+                            <line x1="540" y1="65" x2="570" y2="65" marker-end="url(#arrow-adpp)"/>
+                        </g>
+                        <g fill="#4c525b" text-anchor="middle">
+                            <text x="65"  y="69">PDF-инвойс</text>
+                            <text x="205" y="69">FastAPI</text>
+                            <text x="345" y="69">Tesseract</text>
+                            <text x="487" y="69">LLM-парсинг</text>
+                            <text x="642" y="69">SQLite + UI</text>
+                        </g>
+                    </svg>
+                    <p class="diagram-caption">архитектура пайплайна — полностью локально, без облака</p>
+                </div>
+
+                <div class="links-row">
+                    <a href="https://github.com/jesys22/ai_document_pipeline" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
+                        Репозиторий на GitHub
+                    </a>
+                </div>
+            </article>
+
+            <p class="learning"><strong>Сейчас изучаю:</strong> оценка качества RAG (recall@k, MRR) · продвинутый Python для AI · облачный деплой (RunPod, Docker Compose)</p>
+
+            <div class="section-head" id="contact">
+                <h2>Контакты</h2>
+                <span class="count">отвечаю в течение дня</span>
+            </div>
+
+            <section class="contact-card">
+                <h2>Открыт к удалённой работе и проектам</h2>
+                <p>LLM-инженер, Москва (Щербинка). Полная, частичная занятость, проектная работа.</p>
+                <ul class="contact-list">
+                    <li><span class="cl-label">Email</span><a href="mailto:oleg.boyko.02@list.ru">oleg.boyko.02@list.ru</a></li>
+                    <li><span class="cl-label">Telegram</span><a href="https://t.me/Requay" target="_blank" rel="noopener">@Requay</a></li>
+                    <li><span class="cl-label">GitHub</span><a href="https://github.com/jesys22" target="_blank" rel="noopener">github.com/jesys22</a></li>
+                    <li><span class="cl-label">LinkedIn</span><a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank" rel="noopener">in/oleg-boyko</a></li>
+                    <li><span class="cl-label">Резюме</span><a href="Oleg_Boyko_CV.pdf" download>Oleg_Boyko_CV.pdf</a></li>
+                </ul>
+            </section>
+
+        </main>
+    </div>
 
     <footer class="footer">
-        <div class="footer-inner">
-            <span>&copy; 2026 Олег Бойко</span>
-            <div class="footer-links">
-                <a href="mailto:oleg.boyko.02@list.ru">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
-                    Email
-                </a>
-                <a href="https://t.me/Requay" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    Telegram
-                </a>
-                <a href="https://www.linkedin.com/in/oleg-boyko-b25051413" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05a3.75 3.75 0 0 1 3.37-1.85c3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.78C.8 0 0 .78 0 1.74v20.52C0 23.22.8 24 1.78 24h20.44c.98 0 1.78-.78 1.78-1.74V1.74C24 .78 23.2 0 22.22 0z"/></svg>
-                    LinkedIn
-                </a>
-                <a href="https://github.com/jesys22" target="_blank" rel="noopener">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.15c-3.2.7-3.87-1.36-3.87-1.36-.52-1.33-1.28-1.69-1.28-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.26.72-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.9 10.9 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
+        <span>© 2026 Олег Бойко</span>
+        <span>Сделано вручную на HTML и CSS</span>
     </footer>
 
-    <script>
-        (function () {
-            'use strict';
-
-            var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            var phrases = [
-                'LLM-инженер \u00b7 RAG \u00b7 Агенты',
-                'FastAPI \u00b7 PostgreSQL/pgvector \u00b7 n8n \u00b7 Docker',
-                'Автономные пайплайны, которые экономят время и деньги'
-            ];
-            var typingEl = document.getElementById('typing');
-            var cursorEl = document.querySelector('.cursor');
-
-            if (reducedMotion) {
-                typingEl.textContent = phrases[0];
-                if (cursorEl) cursorEl.style.display = 'none';
-            } else {
-                var phraseIndex = 0, charIndex = 0, deleting = false;
-
-                function tick() {
-                    var current = phrases[phraseIndex];
-                    typingEl.textContent = current.substring(0, charIndex);
-
-                    var delay;
-                    if (!deleting) {
-                        if (charIndex < current.length) {
-                            charIndex++;
-                            delay = 34 + Math.random() * 26;
-                        } else {
-                            deleting = true;
-                            delay = 2600;
-                        }
-                    } else {
-                        if (charIndex > 0) {
-                            charIndex--;
-                            delay = 16;
-                        } else {
-                            deleting = false;
-                            phraseIndex = (phraseIndex + 1) % phrases.length;
-                            delay = 450;
-                        }
-                    }
-                    setTimeout(tick, delay);
-                }
-                tick();
-            }
-
-            if (!reducedMotion) {
-                var spotlight = document.getElementById('spotlight');
-                var mx = -600, my = -600, rafPending = false;
-
-                function updateSpotlight() {
-                    spotlight.style.setProperty('--mx', mx + 'px');
-                    spotlight.style.setProperty('--my', my + 'px');
-                    rafPending = false;
-                }
-
-                window.addEventListener('pointermove', function (e) {
-                    mx = e.clientX;
-                    my = e.clientY;
-                    if (!rafPending) {
-                        rafPending = true;
-                        requestAnimationFrame(updateSpotlight);
-                    }
-                }, { passive: true });
-            }
-
-            var revealEls = document.querySelectorAll('.reveal');
-            if (reducedMotion || !('IntersectionObserver' in window)) {
-                revealEls.forEach(function (el) { el.classList.add('in'); });
-            } else {
-                var observer = new IntersectionObserver(function (entries) {
-                    entries.forEach(function (entry) {
-                        if (entry.isIntersecting) {
-                            entry.target.classList.add('in');
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                }, { threshold: 0.08 });
-                revealEls.forEach(function (el) { observer.observe(el); });
-            }
-        })();
-    </script>
 </body>
 </html>
